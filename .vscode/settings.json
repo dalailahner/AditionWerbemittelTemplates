@@ -1,0 +1,16 @@
+{
+  "editor.tabSize": 2,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.bracketSameLine": true,
+  "prettier.printWidth": 250,
+  "html.format.indentInnerHtml": true,
+  "html.format.wrapLineLength": 250,
+  "css.format.newlineBetweenRules": false,
+  "css.format.maxPreserveNewLines": 2,
+  "css.format.spaceAroundSelectorSeparator": true,
+  "css.lint.duplicateProperties": "error",
+  "css.lint.float": "error",
+  "htmlhint.options": {
+    "attr-lowercase": false
+  }
+}
