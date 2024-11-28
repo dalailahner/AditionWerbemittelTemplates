@@ -1,0 +1,591 @@
+<div id="adCont_%timestamp%">
+  <!-- Werbeplatz %contentunitid%: -->
+  <!-- - kampagne: %campaignid% -->
+  <!-- - banner: %bannerid% -->
+  <!-- - websiteid: %websiteid% -->
+  <div id="codebefore_%contentunitid%" @if:hideCodeBefore@style="display:none" @endif@>@codeBefore@</div>
+
+  <a class="sitelinkCont" href="%clickurl:u%" target="_blank">
+    <div class="sitelinkImgCont">
+      <img class="sitelinkImg" src="@img@" loading="lazy" />
+    </div>
+    <p class="anzeigeLabel">Anzeige</p>
+    <h2 class="sitelinkHeadline">@headline@</h2>
+  </a>
+
+  <div id="codeafter_%contentunitid%" @if:hideCodeAfter@style="display:none" @endif@>@codeAfter@</div>
+
+  @if:truecount@
+  <img src="%truecount%" width="1" height="1" />
+  @endif@
+</div>
+
+<script>
+  (() => {
+    /**
+     * @param { string } url - the URL of the site where the ad lives in.
+     * @returns { string } the custom CSS properties for the applicable site.
+     * @example styleEl.textContent = getCssVariables(window.location);
+     */
+    function getCssVariables(url) {
+      if (url.includes("salzburg24.at")) {
+        return `
+#adCont_%timestamp% {
+  --accentColor: #fbba00;
+  --headlineColor: #111;
+  --textColor: #000;
+  --bgColor: #f8f8f8;
+}
+`;
+      }
+      // default (sn.at):
+      return `
+#adCont_%timestamp% {
+  --accentColor: #0358a9;
+  --headlineColor: #484848;
+  --textColor: #191919;
+  --bgColor: #f0f8ff;
+}
+`;
+    }
+    /**
+     * @param { string } url - the URL of the site where the ad lives in.
+     * @returns { string } the CSS for the Sitelink.
+     * @example styleEl.textContent += getCSS(window.location);
+     */
+    function getCSS(url) {
+      if (RegExp(/(immo)\.([\w\d-]+)\.at/).test(url)) {
+        return `
+/*** IMMO ***/
+/* CHANNEL */
+#adCont_%timestamp% {
+  width: 100%;
+  font-family: Lato, Avenir, "Adobe Heiti Std", "Segoe UI", "Trebuchet MS", sans-serif;
+ 
+  & * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    word-break: break-word;
+  }
+ 
+  & .sitelinkCont {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    text-decoration: none;
+    border-bottom: 3px solid var(--accentColor);
+    background-color: #eee;
+  }
+ 
+  & .sitelinkImgCont {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+  & .sitelinkImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+ 
+  & .anzeigeLabel {
+    padding: 10px 0;
+    color: ${url.includes("salzburg24.at") ? "var(--textColor)" : "var(--accentColor)"};
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+  }
+ 
+  & .sitelinkHeadline {
+    color: var(--headlineColor);
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: left;
+    text-wrap: pretty;
+  }
+}
+ 
+/* SEARCH */
+.banner-serp-results #adCont_%timestamp% {
+  & .sitelinkCont {
+    margin-bottom: 1rem;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,.175);
+    border-radius: 4px;
+    background-color: #fff;
+    @media screen and (min-width: 576px) {
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+    }
+  }
+  & .sitelinkImgCont {
+    width: 100%;
+    @media screen and (min-width: 576px) {
+      width: 41.66666667%;
+    }
+  }
+  & .sitelinkImg {
+    object-fit: contain;
+    @media screen and (min-width: 576px) {
+      object-fit: cover;
+    }
+  }
+  & .anzeigeLabel {
+    padding: 0.5rem 0.5rem 0;
+    font-size: 0.875rem;
+    line-height: 1;
+    @media screen and (min-width: 576px) {
+      padding: 1.25em;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+  & .sitelinkHeadline {
+    padding: 0.5rem;
+    width: 100%;
+    color: ${url.includes("salzburg24.at") ? "var(--textColor)" : "var(--accentColor)"};
+    font-size: 1.125rem;
+    @media screen and (min-width: 576px) {
+      padding: 0;
+      width: 58.33333333%;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  }
+}
+/* ARTICLE */
+.col-expose-details #adCont_%timestamp% {
+  & .sitelinkCont {
+    padding: 1rem 0 0;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    border: none;
+    background-color: #fff;
+  }
+  & .sitelinkImgCont {
+    width: 50%;
+  }
+  & .sitelinkImg {
+    object-fit: cover;
+  }
+  & .anzeigeLabel {
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.75rem;
+    line-height: 1;
+    @media screen and (min-width: 768px) {
+      font-size: 0.875rem;
+    }
+  }
+  & .sitelinkHeadline {
+    padding: 0;
+    width: 100%;
+    color: var(--headlineColor);
+    font-size: 1rem;
+    text-align: center;
+    @media screen and (min-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+`;
+      }
+      if (RegExp(/(jobs|karriere)\.[\w\d-]+\.at/).test(url)) {
+        return `
+/*** KARRIERE ***/
+/* CHANNEL */
+#adCont_%timestamp% {
+  width: 100%;
+  font-family: Lato, Avenir, "Adobe Heiti Std", "Segoe UI", "Trebuchet MS", sans-serif;
+ 
+  & * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    word-break: break-word;
+  }
+ 
+  & .sitelinkCont {
+    padding: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    text-decoration: none;
+  }
+ 
+  & .sitelinkImgCont {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+  & .sitelinkImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+ 
+  & .anzeigeLabel {
+    color: var(--textColor);
+    font-size: 0.875rem;
+    text-align: left;
+    text-transform: uppercase;
+  }
+ 
+  & .sitelinkHeadline {
+    margin-top: 0.5em;
+    color: ${url.includes("salzburg24.at") ? "var(--textColor)" : "var(--accentColor)"};
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: left;
+    text-wrap: pretty;
+  }
+}
+ 
+/* SEARCH */
+.view-job-search #adCont_%timestamp% {
+  & .sitelinkCont {
+    padding: 2rem;
+    align-items: center;
+    border: none;
+    background-color: var(--bgColor);
+    @media screen and (min-width: 801px) {
+      padding-left: 1.25rem;
+      flex-direction: row;
+      position: relative;
+    }
+  }
+  & .sitelinkImgCont {
+    height: 100px;
+    @media screen and (min-width: 801px) {
+      width: 20%;
+      height: auto;
+    }
+  }
+  & .sitelinkImg {
+    object-fit: contain;
+    @media screen and (min-width: 801px) {
+      object-fit: cover;
+    }
+  }
+  & .anzeigeLabel {
+    margin: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1;
+    @media screen and (min-width: 801px) {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+  & .sitelinkHeadline {
+    margin: 0;
+    width: 100%;
+    font-size: 1.125rem;
+    text-align: center;
+    @media screen and (min-width: 801px) {
+      padding: 0;
+      font-size: 1.5rem;
+    }
+  }
+}
+`;
+      }
+      if (url.includes("www.salzburg24.at")) {
+        return `
+#adCont_%timestamp% {
+  margin: 0 auto 10px;
+  width: calc(100% - 20px);
+  font-family: Montserrat, sans-serif;
+  background-color: var(--bgColor);
+  @media screen and (min-width: 768px) {
+    margin: 0 auto 2rem;
+    width: min(100%, 300px);
+  }
+ 
+  & * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    word-break: break-word;
+  }
+ 
+  & .sitelinkCont {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+ 
+  & .sitelinkImgCont {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+  & .sitelinkImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    scale: 1;
+    transition: scale 0.15s ease-out;
+  }
+ 
+  & .anzeigeLabel {
+    padding: 0.35rem 0.75rem;
+    color: var(--textColor);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    line-height: 1.15;
+    text-transform: uppercase;
+    background-color: var(--accentColor);
+  }
+ 
+  & .sitelinkHeadline {
+    padding: 0.5rem 20px 1rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: left;
+  }
+}
+ 
+/* IN ARTICLE */
+.article #adCont_%timestamp% {
+  position: relative;
+  @media screen and (min-width: 768px) {
+    margin: 0 auto;
+    width: 100%;
+  }
+  & .sitelinkCont {
+    flex-direction: row;
+    align-items: center;
+  }
+  & .sitelinkImgCont {
+    width: calc(100% / 1.618);
+  }
+  & .anzeigeLabel {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    @media screen and (min-width: 768px) {
+      top: 0;
+      bottom: unset;
+    }
+  }
+  & .sitelinkHeadline {
+    width: 100%;
+    padding: 0 1.5em 0 0.5em;
+    font-size: 1.125rem;
+    z-index: 1;
+    @media screen and (min-width: 768px) {
+      padding: 0 1em;
+    }
+  }
+}
+`;
+      }
+      // default (sn.at):
+      return `
+/*** SN.at ***/
+/* CHANNEL NORMAL */
+#adCont_%timestamp% {
+  width: 100%;
+  font-family: Lato, Avenir, "Adobe Heiti Std", "Segoe UI", "Trebuchet MS", sans-serif;
+ 
+  & * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    word-break: break-word;
+  }
+ 
+  & .sitelinkCont {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    text-decoration: none;
+    &:is(:hover, :focus-visible) {
+      & .sitelinkImg {
+        scale: 1.05;
+      }
+      & .sitelinkHeadline {
+        color: var(--accentColor);
+      }
+    }
+  }
+ 
+  & .sitelinkImgCont {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+  & .sitelinkImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    scale: 1;
+    transition: scale 0.15s ease-out;
+  }
+ 
+  & .anzeigeLabel {
+    margin: 10px 0;
+    color: var(--accentColor);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+  }
+ 
+  & .sitelinkHeadline {
+    color: var(--headlineColor);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    text-wrap: pretty;
+  }
+}
+ 
+/* CHANNEL BLAUE BOX */
+@media screen and (min-width: 768px) {
+  :is(.box-lead, .box-regional) #adCont_%timestamp% {
+    & .sitelinkCont {
+      height: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      justify-content: end;
+ 
+      &:is(:hover, :focus-visible) .sitelinkHeadline {
+        color: #fff;
+      }
+    }
+    & .sitelinkImgCont {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: -1;
+      
+      &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(to bottom,transparent ,rgba(25,25,25,.65));
+      }
+    }
+    & .anzeigeLabel {
+      margin-left: 1.25rem;
+      color: #fff;
+    }
+    & .sitelinkHeadline {
+      padding: 0 1em 1em;
+      color: #fff;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+}
+ 
+/* IN ARTICLE */
+:is(.page-article, .l-content, .banner-serp-results) #adCont_%timestamp% {
+  & .sitelinkCont {
+    padding: 0;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    border: none;
+    background-color: var(--bgColor);
+  }
+  & .sitelinkImgCont {
+    width: calc(100% / 1.618);
+  }
+  & .anzeigeLabel {
+    margin: 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 0.666rem;
+    line-height: 1;
+    @media screen and (min-width: 768px) {
+      top: 0;
+      bottom: unset;
+      font-size: 0.875rem;
+    }
+  }
+  & .sitelinkHeadline {
+    padding: 0 1.5em 0 0.5em;
+    width: 100%;
+    font-size: 1.125rem;
+    text-align: left;
+    @media screen and (min-width: 768px) {
+      padding: 0 1em;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  }
+}
+`;
+    }
+    /**
+     * @param { Window } startingWindow - the window from where the function should start traversing up.
+     * @returns { HTMLIFrameElement | false } the topmost iframe or false if there is none.
+     * @example const iframe = getOutermostIframe(window);
+     */
+    function getOutermostIframe(startingWindow) {
+      if (startingWindow.frameElement) {
+        if (startingWindow.parent.frameElement) {
+          return getOutermostIframe(startingWindow.parent);
+        }
+        return startingWindow.frameElement;
+      }
+      return false;
+    }
+
+    function getTopUrl() {
+      return this.window.location === this.window.parent.location ? this.document.location.href : this.document.referrer;
+    }
+
+    const ADel = document.querySelector("#adCont_%timestamp%");
+    const targetIframe = getOutermostIframe(window);
+    const topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
+
+    const CSSel = document.createElement("style");
+    CSSel.textContent = getCssVariables(topUrl);
+    CSSel.textContent += getCSS(topUrl);
+    ADel.insertAdjacentElement("afterbegin", CSSel);
+
+    if (targetIframe) {
+      targetIframe.insertAdjacentElement("beforebegin", ADel);
+      targetIframe.parentNode.style.width = "100%";
+      targetIframe.parentNode.style.minWidth = "100%";
+      targetIframe.remove();
+    }
+  })();
+</script>

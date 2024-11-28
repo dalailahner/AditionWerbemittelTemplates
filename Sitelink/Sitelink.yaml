@@ -1,0 +1,33 @@
+---
+img:
+  fieldType: upload
+  text: Bild (600x400) hochladen
+  type: file
+headline:
+  fieldType: textfield
+  text: Headline<br>(max. 50 Zeichen)
+  type: string
+  validator:
+    type: length
+    min: 0
+    max: 50
+hideCodeBefore:
+  fieldType: checkbox
+  type: boolean
+  text: "Hide Code before (display: none)"
+  default: true
+codeBefore:
+  fieldType: textarea
+  text: Additional HTML-Code before
+  type: text
+  default: <!-- HTML-Code before -->
+hideCodeAfter:
+  fieldType: checkbox
+  type: boolean
+  text: "Hide Code after (display: none)"
+  default: true
+codeAfter:
+  fieldType: textarea
+  text: Additional HTML-Code after
+  type: text
+  default: <!-- HTML-Code after -->
