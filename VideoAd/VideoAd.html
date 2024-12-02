@@ -725,32 +725,36 @@
     CSSel.textContent += getCSS(topUrl);
     ADel.insertAdjacentElement("afterbegin", CSSel);
 
-    const vid = ADel.querySelector(".videoAdVideo");
-    const playBtn = ADel.querySelector(".videoAdControl.pause");
-    const muteBtn = ADel.querySelector(".videoAdControl.unmute");
-    playBtn.addEventListener("click", (event) => {
-      if (vid?.paused) {
-        vid.play();
-        playBtn.querySelector(".pauseCircle").style.opacity = 1;
-        playBtn.querySelector(".playCircle").style.opacity = 0;
-      } else {
-        vid.pause();
-        playBtn.querySelector(".pauseCircle").style.opacity = 0;
-        playBtn.querySelector(".playCircle").style.opacity = 1;
-      }
-    });
-    muteBtn.addEventListener("click", (event) => {
-      vid.removeAttribute("muted");
-      if (vid.muted) {
-        vid.muted = false;
-        muteBtn.querySelector(".volumeOff").style.opacity = 1;
-        muteBtn.querySelector(".volumeOn").style.opacity = 0;
-      } else {
-        vid.muted = true;
-        muteBtn.querySelector(".volumeOff").style.opacity = 0;
-        muteBtn.querySelector(".volumeOn").style.opacity = 1;
-      }
-    });
+    const scriptEl = document.createElement("script");
+    scriptEl.textContent = `
+const vid = ADel.querySelector(".videoAdVideo");
+const playBtn = ADel.querySelector(".videoAdControl.pause");
+const muteBtn = ADel.querySelector(".videoAdControl.unmute");
+playBtn.addEventListener("click", (event) => {
+  if (vid?.paused) {
+    vid.play();
+    playBtn.querySelector(".pauseCircle").style.opacity = 1;
+    playBtn.querySelector(".playCircle").style.opacity = 0;
+  } else {
+    vid.pause();
+    playBtn.querySelector(".pauseCircle").style.opacity = 0;
+    playBtn.querySelector(".playCircle").style.opacity = 1;
+  }
+});
+muteBtn.addEventListener("click", (event) => {
+  vid.removeAttribute("muted");
+  if (vid.muted) {
+    vid.muted = false;
+    muteBtn.querySelector(".volumeOff").style.opacity = 1;
+    muteBtn.querySelector(".volumeOn").style.opacity = 0;
+  } else {
+    vid.muted = true;
+    muteBtn.querySelector(".volumeOff").style.opacity = 0;
+    muteBtn.querySelector(".volumeOn").style.opacity = 1;
+  }
+});
+`;
+    ADel.insertAdjacentElement("beforeend", scriptEl);
 
     if (targetIframe) {
       targetIframe.insertAdjacentElement("beforebegin", ADel);
