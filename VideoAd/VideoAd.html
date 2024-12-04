@@ -135,6 +135,7 @@
           top: 0;
           left: 0;
           opacity: 1;
+          pointer-events: none;
           transition: opacity 0.15s ease-in-out;
           &:is(.playCircle, .volumeOff) {
             opacity: 0;
@@ -327,6 +328,7 @@
           top: 0;
           left: 0;
           opacity: 1;
+          pointer-events: none;
           transition: opacity 0.15s ease-in-out;
           &:is(.playCircle, .volumeOff) {
             opacity: 0;
@@ -480,6 +482,7 @@
           top: 0;
           left: 0;
           opacity: 1;
+          pointer-events: none;
           transition: opacity 0.15s ease-in-out;
           &:is(.playCircle, .volumeOff) {
             opacity: 0;
@@ -618,6 +621,7 @@
           top: 0;
           left: 0;
           opacity: 1;
+          pointer-events: none;
           transition: opacity 0.15s ease-in-out;
           &:is(.playCircle, .volumeOff) {
             opacity: 0;
@@ -757,10 +761,10 @@
   });
 })();
 `;
-    ADel.insertAdjacentElement("beforeend", scriptEl);
 
     if (targetIframe) {
       targetIframe.insertAdjacentElement("beforebegin", ADel);
+      targetIframe.insertAdjacentElement("afterend", scriptEl);
       targetIframe.parentNode.style.width = "100%";
       targetIframe.parentNode.style.minWidth = "100%";
       targetIframe.remove();
