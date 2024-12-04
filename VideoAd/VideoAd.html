@@ -748,16 +748,16 @@
     }
   });
   muteBtn.addEventListener("click", (event) => {
-    vid.removeAttribute("muted");
-    if (vid.muted) {
+    if (vid?.muted) {
       vid.muted = false;
-      muteBtn.querySelector(".volumeOff").style.opacity = 1;
-      muteBtn.querySelector(".volumeOn").style.opacity = 0;
-    } else {
-      vid.muted = true;
       muteBtn.querySelector(".volumeOff").style.opacity = 0;
       muteBtn.querySelector(".volumeOn").style.opacity = 1;
+    } else {
+      vid.muted = true;
+      muteBtn.querySelector(".volumeOff").style.opacity = 1;
+      muteBtn.querySelector(".volumeOn").style.opacity = 0;
     }
+    vid.removeAttribute("muted");
   });
 })();
 `;
