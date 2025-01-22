@@ -5,11 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>interstitial</title>
     <style>
-      * {
+      /* modiefied noicss.reset 1.8.0 */
+      @property --accentColor {
+        syntax: "<color>";
+        inherits: true;
+        initial-value: magenta;
+      }
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        overflow-wrap: break-word;
+        border: none;
+        @supports (transition-behavior: allow-discrete) {
+          /* used to transition from display: none; to display: block; */
+          transition-behavior: allow-discrete;
+        }
+        @supports (interpolate-size: allow-keywords) {
+          /* used to transition from height: 0; to height: auto; without using the calc-size() function */
+          interpolate-size: allow-keywords;
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--accentColor);
+          outline-offset: 2px;
+        }
+
+        &::selection,
+        &::target-text {
+          background-color: var(--accentColor);
+        }
+
+        &[contenteditable] {
+          caret-color: var(--accentColor);
+        }
       }
+      html {
+        scroll-behavior: smooth;
+        color-scheme: light dark;
+        accent-color: var(--accentColor);
+        font-size: 100%;
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+        -moz-tab-size: 4;
+        tab-size: 4;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        margin: 0;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      span {
+        overflow-wrap: break-word;
+        @supports (text-box: trim-both cap alphabetic) {
+          text-box: trim-both cap alphabetic;
+        }
+      }
+      hr {
+        height: 0;
+        color: inherit;
+      }
+      abbr[title] {
+        text-decoration: underline dotted;
+      }
+      b,
+      strong {
+        font-weight: bolder;
+      }
+      code,
+      kbd,
+      pre,
+      samp {
+        font-family: Hack, ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 1em;
+      }
+      small {
+        font-size: 80%;
+      }
+      sub,
+      sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+      }
+      sub {
+        bottom: -0.25em;
+      }
+      sup {
+        top: -0.5em;
+      }
+      table {
+        text-indent: 0;
+        border-color: inherit;
+      }
+      [type="button"],
+      [type="reset"],
+      [type="submit"],
+      button,
+      input,
+      textarea,
+      select,
+      optgroup,
+      option {
+        margin: 0;
+        font: inherit;
+        letter-spacing: inherit;
+        word-spacing: inherit;
+        @supports (text-box: trim-both cap alphabetic) {
+          text-box: trim-both cap alphabetic;
+        }
+        @supports (field-sizing: content) {
+          field-sizing: content;
+        }
+      }
+      input,
+      textarea {
+        min-width: 0;
+        caret-color: var(--accentColor);
+      }
+      [type="text"],
+      [type="search"],
+      textarea {
+        &::spelling-error {
+          text-decoration: from-font red wavy underline;
+        }
+        &::grammar-error {
+          text-decoration: from-font blue wavy underline;
+        }
+      }
+      button,
+      select {
+        text-transform: none;
+      }
+      [type="button"],
+      [type="reset"],
+      [type="submit"],
+      button {
+        -webkit-appearance: button;
+        @supports (text-box: trim-both cap alphabetic) {
+          text-box: trim-both cap alphabetic;
+        }
+      }
+      ::-moz-focus-inner {
+        border-style: none;
+        padding: 0;
+      }
+      :-moz-focusring {
+        outline: 1px dotted ButtonText;
+      }
+      :-moz-ui-invalid {
+        box-shadow: none;
+      }
+      legend {
+        padding: 0;
+      }
+      progress {
+        vertical-align: baseline;
+      }
+      ::-webkit-inner-spin-button,
+      ::-webkit-outer-spin-button {
+        height: auto;
+      }
+      [type="search"] {
+        -webkit-appearance: textfield;
+        outline-offset: -2px;
+      }
+      ::-webkit-search-decoration {
+        -webkit-appearance: none;
+      }
+      ::-webkit-file-upload-button {
+        -webkit-appearance: button;
+        font: inherit;
+      }
+      summary {
+        display: list-item;
+      }
+      dialog {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      img,
+      picture,
+      video,
+      canvas,
+      svg {
+        width: auto;
+        height: auto;
+        user-select: none;
+      }
+    </style>
+    <style>
       :root {
         --accentColor: #0358a9;
         --fontFamily: Lato, Avenir, "Helvetica Neue", Arial, sans-serif;
@@ -18,43 +212,59 @@
       }
       body {
         width: 100%;
-        min-height: 100vh;
         background-color: var(--bgColor);
       }
       .mainCont {
         width: 100%;
-        height: 100lvh;
-        position: relative;
+        height: 100svh;
+        display: grid;
+        grid-template-rows: 5rem 1fr 1fr;
+        grid-template-columns: 2rem 1fr 2rem 1fr 2rem;
+        grid-template-areas:
+          ". label label label ."
+          "img img img img img"
+          ". text text text .";
+        place-items: center;
+
+        @media (orientation: landscape) {
+          grid-template-areas:
+            "img img . label ."
+            "img img . text ."
+            "img img . text .";
+        }
       }
-      .bgCont {
-        & .bgImg {
+      .label {
+        margin: 0 auto;
+        padding: 0.25em 0.5em;
+        width: fit-content;
+        height: fit-content;
+        grid-area: label;
+        color: var(--bgColor);
+        font-family: var(--fontFamily);
+        font-size: 1rem;
+        font-weight: 400;
+        text-align: center;
+        border-radius: 3px;
+        background-color: var(--fontColor);
+        @supports (text-box: trim-both cap alphabetic) {
+          text-box: trim-both cap alphabetic;
+        }
+      }
+      .imageCont {
+        width: 100%;
+        height: 100%;
+        grid-area: img;
+        overflow: hidden;
+        & .image {
           width: 100%;
-          height: 50%;
-          position: absolute;
-          top: 0;
+          height: 100%;
           object-fit: cover;
         }
-        & .wave {
-          width: 150%;
-          position: absolute;
-          top: 40%;
-
-          & path {
-            fill: var(--bgColor);
-          }
-        }
-      }
-      .content {
-        padding: 0 0.5rem 0.5rem;
-        height: 50%;
-        position: absolute;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
       }
       .textCont {
+        width: 100%;
+        height: 100%;
+        grid-area: text;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -76,61 +286,38 @@
           font-size: 1rem;
         }
         & .btn {
-          padding: 0.5rem 1rem;
-          color: inherit;
-          font-family: inherit;
+          padding: 0.5em 1em;
+          color: var(--bgColor);
           font-weight: 900;
           font-size: 1.1rem;
           letter-spacing: 0.5px;
           line-height: 1;
           text-align: center;
           text-decoration: none;
+          border: 1px solid var(--accentColor);
           border-radius: 3px;
-          background: -webkit-linear-gradient(-12deg, #ffd446 0%, #ffbb1e 33.33%, #ffbb1e, var(--accentColor) 60%, var(--accentColor) 100%) 0% 50% / 300% 100%;
+          background-color: var(--accentColor);
           transition: all 0.2s ease;
 
           &:is(:hover, :focus-visible) {
-            color: #fff;
-            background-position: 100% 50%;
+            color: var(--accentColor);
+            background-color: var(--bgColor);
           }
-        }
-      }
-      .logo {
-        max-width: 75%;
-        max-height: 33vw;
-
-        & path {
-          fill: var(--accentColor);
         }
       }
     </style>
   </head>
   <body>
     <div class="mainCont">
-      <div class="bgCont">
-        <img class="bgImg" src="image.jpg" alt="" />
-        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 250">
-          <path d="M500 28.4c-12-3.6-23.8-7.2-35.8-7.7-23.6-1.2-47.5 8.3-71.5 8.2-23.6 0-47.5-12.4-71.2-14.6-24-2.2-52.7 7.4-71.5 12.8-17.3 5-46.3 9.8-71.5 10.4-24 .6-47.6-11.4-71.2-11.3-24 0-47.8 11.2-71.5 10-12-.5-23.9-4.2-35.8-7.8V250h500Z" />
-        </svg>
+      <p class="label">Anzeige</p>
+      <div class="imageCont">
+        <img class="image" src="image.jpg" alt="" />
       </div>
-      <div class="content">
-        <div class="textCont">
-          <h1>Lorem ipsum dolor sit amet, consectetur adipiscing</h1>
-          <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</p>
-          <a class="btn" href="%clickurl:u%" target="_blank">Link</a>
-        </div>
-        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850.4 107.7">
-          <path
-            d="M203.8 79.7V27.4L190 19.2l-9.7 9V5.1l-9 3.5-5-1.3V80l14.3 10 23.2-10.3Zm-13.9-2.3-9.6-4V33.9l9.6 4.7v38.8Zm568.7-55.7h11.6l-7.4 12.8h-4.2v38.8l7.1 5.2-9.5 11.7-11.7-7.2V34.4h-4.3l18.4-22.5v9.8zm-113.2.5 9.4-3.3.1 57.4 4.4 3.4-10.2 10.9-8.6-7.4V19.5l4.9 2.7zm8.2-17.5-7.4 11.7-3.6 1.9 3.6-13.6h7.4zM468.4 10v66.3l6.8 3.4-8.1 10.4-13-6.5v-64l-8.5-4.3v73.3H443V6.7h2.6v4.5L456.7 0l11.7 10zM430 0l10.2 6.9V90l-10.1-3.5-3.9 1V15.8l-7.5-5.5L430 0zm-57 42-13.3-23L341 33.7v46L362.2 90l9.3-12.9-1.8-1.3-2.5 3.6L355 73V56.4l18.1-14.3Zm-10 5.4-8 6.2v-19l8 12.7Zm-31.7 42.4V29.7l-19.7-10.4L293.8 34v48.4l11.5 7.3 12-9v13l-14.6-.8-8.4 11.6 1.8 1.3 2.3-3.2 20 5 12.9-17.9Zm-14-12.4-9.6-4V33.9l9.6 4.8v38.7ZM266 19.5l5.1 5.4 14.3-6 8.7 11-9.5 7.6-6.1-3.6v42.2l6.1 3.2-7.5 10.5-13.1-6.5.1-50.8-4.6-2 6.5-11zM123.4 5.1v71.2l4.2 3.1-8.1 10.8-10.2-7.2V7.3l5.1 1.3 9-3.5zM104 79.7l-5.4-3.4V29.7L78.8 19.3 60.8 34v47.4l11.4 8.7 12-10.8v3.9l12 6.8 7.8-10.3Zm-19.5-2.5-9.4-3.8V34l9.4 4.8v38.5ZM61.3 6.4l-1.8-1.3L4 81.6 5.8 83l4.1-5.7L32.8 90l18.6-15V42.7l-12-6L61.2 6.4Zm-24 66.8-17.6-9 9.8-13.6 7.8 4.1v18.5Zm20-69.8L55.5 2 49 11 32.2 0 11.5 14.3v27.6l11.1 5.3L0 78.7 1.9 80 57.3 3.4ZM40.2 22.5l-7.4 10.9-7.5-4V15l14.9 7.5Zm482.4 57.2-5.4-3.4V29.7l-19.6-10.4L479.5 34v47.4l11.3 8.7 12-10.8v3.9l12 6.8 7.9-10.3ZM503.1 77l-9.4-3.7V34l9.4 4.7V77Zm319.3-57.9v9.3l12.3-9.5L846.2 30l-.1 46.3 4.3 2.8-7.9 11.4-10.3-7.3.1-43.8-9.9-5.5v42.4l4.3 3.1-8.2 10.8-10.1-7V19.5l4.6 2.7 9.4-3.1zm-249.5-14v23.3l12.2-8.9 11.6 10.6-.1 46.2 4.2 2.8-7.8 11.4-10.3-7.3.1-44-9.9-5.3v42.4l4.3 3.1-8.2 10.8-10.2-7V7.3l5.1 1.4 9-3.6z" />
-          <path
-            d="m544.4 19.4 17.7 10-8.8 10.3-11-5.9v39.5l10.4 6.2 2.6-3.6 1.8 1.3-9.4 13-19.6-10.3V33.6l16.3-14.2zm-164.2.1 5.1 5.4 14.3-6 8.7 11-9.5 7.6-6.1-3.6v42.2l6 3.2-7.5 10.5-13.1-6.5.1-50.6-4.5-2.2 6.5-11zm-239.5-.3 17.4 8.4-9.3 11.4 8.1 7v45.3l-16.6 10.5-11.1-7.9 6.9-9.1L143 88V50.7l-9.2-6.4 8.9-9.3-12.6-6.7 10.6-9.1zm79 .5 9.1 6.3v47.2l9.7 4.2V34.8l-3.5-3.5 10.9-11.6 6.8 5.8v50.7l5.2 3.3-8.2 10.5-8.4-5.5-11.7 5.5-14.8-10.5V34.8a69 69 0 0 1-4.6-4.6l9.5-10.5Zm391.1-.2 5.1 5.4 14.3-6 8.7 11-9.5 7.6-6.1-3.6v42.2l6.1 3.2-7.6 10.5-13.1-6.5.2-50.8-4.6-2 6.5-11zM803.3 42l-13.4-23-18.7 14.6v46L792.4 90l9.3-12.9-1.8-1.3-2.5 3.6-12.2-6.4V56.4l18-14.3Zm-10 5.4-8 6.2v-19l8 12.7ZM709.4 5.1v23.3l12.2-8.9 11.6 10.6-.1 46.2 4.3 2.8-7.9 11.4-10.3-7.3.1-44-9.9-5.3v42.4l4.3 3.1-8.2 10.8-10.1-7V7.3l5.1 1.4 8.9-3.6z" />
-          <path d="m680.9 19.4 17.8 10-8.9 10.3-11-5.9v39.5l10.4 6.2 2.7-3.6 1.7 1.3-9.4 13-19.5-10.3V33.6l16.2-14.2z" />
-        </svg>
+      <div class="textCont">
+        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing</h1>
+        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</p>
+        <a class="btn" href="%clickurl:u%" target="_blank">mehr Infos</a>
       </div>
     </div>
-
-    @if:truecount@
-    <img src="%truecount%" width="1" height="1" />
-    @endif@
   </body>
 </html>
