@@ -65,9 +65,6 @@
       p,
       span {
         overflow-wrap: break-word;
-        @supports (text-box: trim-both cap alphabetic) {
-          text-box: trim-both cap alphabetic;
-        }
       }
       hr {
         height: 0;
@@ -120,9 +117,6 @@
         font: inherit;
         letter-spacing: inherit;
         word-spacing: inherit;
-        @supports (text-box: trim-both cap alphabetic) {
-          text-box: trim-both cap alphabetic;
-        }
         @supports (field-sizing: content) {
           field-sizing: content;
         }
@@ -151,9 +145,6 @@
       [type="submit"],
       button {
         -webkit-appearance: button;
-        @supports (text-box: trim-both cap alphabetic) {
-          text-box: trim-both cap alphabetic;
-        }
       }
       ::-moz-focus-inner {
         border-style: none;
@@ -227,6 +218,7 @@
         place-items: center;
 
         @media (orientation: landscape) {
+          grid-template-rows: 3rem 1fr 1fr;
           grid-template-areas:
             "img img . label ."
             "img img . text ."
@@ -246,9 +238,6 @@
         text-align: center;
         border-radius: 3px;
         background-color: var(--fontColor);
-        @supports (text-box: trim-both cap alphabetic) {
-          text-box: trim-both cap alphabetic;
-        }
       }
       .imageCont {
         width: 100%;
@@ -272,6 +261,10 @@
         gap: 1rem;
         color: var(--fontColor);
         font-family: var(--fontFamily);
+        @media (orientation: landscape) {
+          gap: 0.75rem;
+          line-height: 1.2;
+        }
 
         & h1 {
           color: inherit;
