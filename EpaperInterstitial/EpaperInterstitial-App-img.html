@@ -212,19 +212,19 @@
         height: 100svh;
         display: grid;
         grid-template-rows: 2rem 4fr 1fr;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1rem 1fr;
         grid-template-areas:
-          "label label"
-          "img img"
-          "text text";
+          "label label label"
+          "img img img"
+          "text text text";
         place-items: center;
 
         @media (orientation: landscape) {
-          grid-template-columns: 2fr 1fr;
+          grid-template-columns: 2fr 1rem 1fr;
           grid-template-areas:
-            "img label "
-            "img text"
-            "img text";
+            "img . label "
+            "img . text"
+            "img . text";
         }
       }
 
@@ -260,8 +260,10 @@
           width: 100%;
           height: 100%;
           object-fit: contain;
-          transform: scale(0.75) rotateX(12deg) rotateY(18deg) rotateZ(-6deg);
-          filter: drop-shadow(-3px 6px 6px rgba(0, 0, 0, 0.33)) drop-shadow(-6px 12px 12px rgba(0, 0, 0, 0.33));
+          &.threeDimensional {
+            transform: scale(0.75) rotateX(12deg) rotateY(18deg) rotateZ(-6deg);
+            filter: drop-shadow(-3px 6px 6px rgba(0, 0, 0, 0.33)) drop-shadow(-6px 12px 12px rgba(0, 0, 0, 0.33));
+          }
         }
       }
 
@@ -309,7 +311,7 @@
     <div class="mainCont">
       <p class="label">Anzeige</p>
       <div class="imageCont">
-        <img class="image" src="image.jpg" alt="" />
+        <img class="image threeDimensional" src="image.jpg" alt="" />
       </div>
       <div class="textCont">
         <a class="btn" href="%clickurl:u%" target="_blank">mehr Infos</a>
