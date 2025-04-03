@@ -23,15 +23,22 @@
 <script>
   (() => {
     /**
-     * returns a string with the custom CSS properties for the applicable site (defaults to sn.at)
+     * returns a string with the CSS for the applicable site (defaults to sn.at homepage)
      * @param { string } url - the URL of the site where the ad lives in
-     * @param { boolean } [salzburg24=false] - true if the root domain is salzburg24.at
-     * @returns { string } the custom CSS properties for the applicable site
-     * @example styleEl.textContent = getCssVariables(window.location, true);
+     * @param { number } [headlineLength=0] - character count of the headline text
+     * @returns { string } the CSS for the Sitelink
+     * @example styleEl.textContent = getCSS(window.location, headlineEl.textContent.length);
      */
-    function getCssVariables(url, salzburg24 = false) {
-      if (salzburg24) {
-        return `
+    function getCSS(url, headlineLength = 0) {
+      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.-_\+~#=]+\.salzburg24\.at\/?/).test(url);
+      let cssString = "";
+
+      /**
+       * @returns { string } CSS custom properties
+       */
+      function getCssVariables() {
+        if (salzburg24) {
+          return `
 #adCont_%timestamp% {
   --accentColor: #fbba00;
   --headlineColor: #111;
@@ -39,9 +46,9 @@
   --bgColor: #F6F6F6;
 }
 `;
-      }
-      // default (sn.at):
-      return `
+        }
+        // default (sn.at):
+        return `
 #adCont_%timestamp% {
   --accentColor: #0358a9;
   --headlineColor: #484848;
@@ -49,18 +56,14 @@
   --bgColor: #f0f8ff;
 }
 `;
-    }
-    /**
-     * returns a string with the CSS styling for the applicable site (defaults to sn.at homepage)
-     * @param { string } url - the URL of the site where the ad lives in
-     * @param { boolean } [salzburg24=false] - true if the root domain is salzburg24.at
-     * @param { number } [headlineLength=0] - character count of the headline text
-     * @returns { string } the CSS for the Sitelink
-     * @example styleEl.textContent += getCSS(window.location, true);
-     */
-    function getCSS(url, salzburg24 = false, headlineLength = 0) {
-      if (RegExp(/immo\.[\w\d@:%.-_\+~#=]+\.at/).test(url)) {
-        return `
+      }
+
+      /**
+       * @returns { string } CSS styling
+       */
+      function getCssStyling() {
+        if (RegExp(/immo\.[\w\d@:%.-_\+~#=]+\.at/).test(url)) {
+          return `
 /*** IMMO ***/
 /* CHANNEL */
 #adCont_%timestamp% {
@@ -206,9 +209,9 @@
   }
 }
 `;
-      }
-      if (RegExp(/(jobs|karriere)\.[\w\d@:%.-_\+~#=]+\.at/).test(url)) {
-        return `
+        }
+        if (RegExp(/(jobs|karriere)\.[\w\d@:%.-_\+~#=]+\.at/).test(url)) {
+          return `
 /*** KARRIERE ***/
 /* CHANNEL */
 #adCont_%timestamp% {
@@ -310,9 +313,9 @@
   }
 }
 `;
-      }
-      if (salzburg24) {
-        return `
+        }
+        if (salzburg24) {
+          return `
 /* sitelink fix fuer startseite */
 .contentbox .teaserbox .teaser.content_ad:has(.sitelinkCont) {
   place-content: start;
@@ -413,9 +416,9 @@
   }
 }
 `;
-      }
-      // default (sn.at):
-      return `
+        }
+        // default (sn.at):
+        return `
 /*** SN.at ***/
 /* CHANNEL NORMAL */
 #adCont_%timestamp% {
@@ -564,7 +567,14 @@
   }
 }
 `;
+      }
+
+      cssString += getCssVariables();
+      cssString += getCssStyling();
+
+      return cssString;
     }
+
     /**
      * @param { Window } startingWindow - the window from where the function should start traversing up.
      * @returns { HTMLIFrameElement | false } the topmost iframe or false if there is none.
@@ -580,24 +590,29 @@
       return false;
     }
 
+    /**
+     * @returns { string } url of the root (topmost) site
+     */
     function getTopUrl() {
       return this.window.location === this.window.parent.location ? this.document.location.href : this.document.referrer;
     }
 
     const ADel = document.querySelector("#adCont_%timestamp%");
-    const headlineLength = ADel.querySelector(".sitelinkHeadline").textContent.length;
-    const targetIframe = getOutermostIframe(window);
-    const topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
-    const isSalzburg24 = RegExp(/https?:\/\/[\w\d@:%.-_\+~#=]+\.salzburg24\.at\/?/).test(topUrl);
+    if (ADel) {
+      const headlineLength = ADel.querySelector(".sitelinkHeadline")?.textContent.length;
+      const targetIframe = getOutermostIframe(window);
+      const topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
 
-    const CSSel = document.createElement("style");
-    CSSel.textContent = getCssVariables(topUrl, isSalzburg24);
-    CSSel.textContent += getCSS(topUrl, isSalzburg24, headlineLength);
-    ADel.insertAdjacentElement("afterbegin", CSSel);
+      const CSSel = document.createElement("style");
+      CSSel.textContent = getCSS(topUrl, headlineLength);
+      ADel.insertAdjacentElement("afterbegin", CSSel);
 
-    if (targetIframe) {
-      targetIframe.insertAdjacentElement("beforebegin", ADel);
-      targetIframe.remove();
+      if (targetIframe) {
+        targetIframe.insertAdjacentElement("beforebegin", ADel);
+        targetIframe.remove();
+      }
+    } else {
+      console.warn("#adCont_%timestamp% not found in DOM; cancelled inserting iframe content into site;");
     }
   })();
 </script>
