@@ -711,7 +711,7 @@
     }
 
     function getTopUrl() {
-      return this.window.location === this.window.parent.location ? this.document.location.href : this.document.referrer;
+      return this.window.location === this.window.parent.location ? this.document.location.origin : this.document.referrer;
     }
 
     const ADel = document.querySelector("#adCont_%timestamp%");
