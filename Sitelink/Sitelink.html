@@ -26,8 +26,8 @@
      * returns a string with the CSS for the applicable site (defaults to sn.at homepage)
      * @param { string } url - the URL of the site where the ad lives in
      * @param { number } [headlineLength=0] - character count of the headline text
-     * @returns { string } the CSS for the Sitelink
-     * @example styleEl.textContent = getCSS(window.location, headlineEl.textContent.length);
+     * @returns { string } the CSS for the Ad
+     * @example styleEl.textContent = getCSS(window.location.origin, headlineEl.textContent.length);
      */
     function getCSS(url, headlineLength = 0) {
       const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.-_\+~#=]+\.salzburg24\.at\/?/).test(url);
@@ -601,7 +601,10 @@
     if (ADel) {
       const headlineLength = ADel.querySelector(".sitelinkHeadline")?.textContent.length;
       const targetIframe = getOutermostIframe(window);
-      const topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
+      let topUrl;
+      if (targetIframe) {
+        topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
+      }
 
       const CSSel = document.createElement("style");
       CSSel.textContent = getCSS(topUrl, headlineLength);
