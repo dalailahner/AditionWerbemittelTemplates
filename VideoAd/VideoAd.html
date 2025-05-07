@@ -433,6 +433,11 @@ html {
         }
         if (salzburg24) {
           return `
+/* sitelink fix fuer startseite */
+.contentbox .teaserbox .teaser.content_ad:has(.videoAdCont) {
+  place-content: start;
+}
+
 #adCont_%timestamp% {
   font-family: "Nunito Sans", "Nunito Sans-fallback", Montserrat, sans-serif;
 
@@ -504,12 +509,14 @@ html {
   }
     
   & .videoAdLink {
+    margin-top: 0.6rem;
     width: 100%;
     text-decoration: none;
   }
  
   & .anzeigeLabel {
-    padding: 0.35rem 0.75rem;
+    margin-bottom: 0.6rem;
+    padding: 0.35rem 0.5rem;
     width: fit-content;
     color: var(--textColor);
     font-size: 0.75rem;
@@ -517,11 +524,11 @@ html {
     letter-spacing: 0.05em;
     line-height: 1.15;
     text-transform: uppercase;
+    text-box: trim-both cap alphabetic;
     background-color: var(--accentColor);
   }
  
   & .videoAdHeadline {
-    padding: 0.5rem 20px 1rem;
     font-size: 1.2rem;
     font-weight: 800;
     line-height: 1.15;
