@@ -433,9 +433,12 @@ html {
         }
         if (salzburg24) {
           return `
-/* sitelink fix fuer startseite */
+/* fix fuer startseite */
 .contentbox .teaserbox .teaser.content_ad:has(.videoAdCont) {
   place-content: start;
+  & a::after {
+    display: none;
+  }
 }
 
 #adCont_%timestamp% {
