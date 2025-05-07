@@ -49,6 +49,17 @@
       let cssString = "";
 
       /**
+       * @returns { string } minimal CSS reset
+       */
+      function getCssReset() {
+        return `
+html {
+  font-size: 100%;
+}
+`;
+      }
+
+      /**
        * @returns { string } CSS custom properties
        */
       function getCssVariables() {
@@ -423,15 +434,8 @@
         if (salzburg24) {
           return `
 #adCont_%timestamp% {
-  margin: 0 auto 10px;
-  width: calc(100% - 20px);
-  font-family: Montserrat, sans-serif;
-  background-color: var(--bgColor);
-  @media screen and (min-width: 768px) {
-    margin: 0 auto 2rem;
-    width: min(100%, 300px);
-  }
- 
+  font-family: "Nunito Sans", "Nunito Sans-fallback", Montserrat, sans-serif;
+
   & * {
     box-sizing: border-box;
     padding: 0;
@@ -703,6 +707,7 @@
 `;
       }
 
+      cssString += getCssReset();
       cssString += getCssVariables();
       cssString += getCssStyling();
 

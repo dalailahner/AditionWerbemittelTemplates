@@ -34,6 +34,17 @@
       let cssString = "";
 
       /**
+       * @returns { string } minimal CSS reset
+       */
+      function getCssReset() {
+        return `
+html {
+  font-size: 100%;
+}
+`;
+      }
+
+      /**
        * @returns { string } CSS custom properties
        */
       function getCssVariables() {
@@ -569,6 +580,7 @@
 `;
       }
 
+      cssString += getCssReset();
       cssString += getCssVariables();
       cssString += getCssStyling();
 
