@@ -45,7 +45,7 @@
      * @example styleEl.textContent = getCSS(window.location.origin);
      */
     function getCSS(url) {
-      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.-_\+~#=]+\.salzburg24\.at\/?/).test(url);
+      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.\-_\+~#=]+\.salzburg24\.at\/?/).test(url);
       let cssString = "";
 
       /**
@@ -88,7 +88,7 @@ html {
        * @returns { string } CSS styling
        */
       function getCssStyling() {
-        if (RegExp(/immo\.[\w\d@:%.-_\+~#=]+\.at/).test(url)) {
+        if (RegExp(/immo\.[\w\d@:%.\-_\+~#=]+\.at/).test(url)) {
           return `
 /*** IMMO ***/
 /* CHANNEL */
@@ -283,7 +283,7 @@ html {
 }
 `;
         }
-        if (RegExp(/(jobs|karriere)\.[\w\d@:%.-_\+~#=]+\.at/).test(url)) {
+        if (RegExp(/(jobs|karriere)\.[\w\d@:%.\-_\+~#=]+\.at/).test(url)) {
           return `
 /*** KARRIERE ***/
 /* CHANNEL */
