@@ -495,7 +495,7 @@ html {
 
 /* CHANNEL BLAUE BOX */
 @media screen and (min-width: 768px) {
-  :is(.box-lead, .box-regional) #adCont_%timestamp% {
+  .box-lead #adCont_%timestamp% {
     & .sitelinkCont {
       height: 100%;
       position: absolute;
@@ -540,7 +540,7 @@ html {
 }
 
 /* IN ARTICLE */
-:is(.page-article, .l-content, .banner-serp-results) #adCont_%timestamp% {
+:is(.articleContent, .l-content, .banner-serp-results) #adCont_%timestamp% {
   & .sitelinkCont {
     padding: 0;
     flex-direction: row;
@@ -557,6 +557,7 @@ html {
     position: absolute;
     bottom: 0;
     right: 0;
+    font-family: Lato, Avenir, "Adobe Heiti Std", "Segoe UI", "Trebuchet MS", sans-serif;
     font-size: 0.666rem;
     line-height: 1;
     @media screen and (min-width: 768px) {
