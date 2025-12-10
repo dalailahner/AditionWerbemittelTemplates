@@ -628,7 +628,7 @@ html {
 
     const ADel = document.querySelector("#adCont_%timestamp%");
     if (ADel) {
-      const headlineLength = getRealTextLength(ADel.querySelector(".sitelinkHeadline")?.textContent);
+      const headlineLength = getRealTextLength(ADel.querySelector(":scope .sitelinkHeadline")?.textContent);
       const targetIframe = getOutermostIframe(window);
       let topUrl;
       if (targetIframe) {

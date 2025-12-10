@@ -790,11 +790,11 @@ html {
       scriptEl.textContent = `
 (() => {
   const ADel = document.querySelector("#adCont_%timestamp%");
-  const vid = ADel.querySelector(".videoAdVideo");
-  const controls = ADel.querySelector(".videoAdControls");
+  const vid = ADel.querySelector(":scope .videoAdVideo");
+  const controls = ADel.querySelector(":scope .videoAdControls");
   let showControlsTimeout;
-  const playBtn = ADel.querySelector(".videoAdControl.pause");
-  const muteBtn = ADel.querySelector(".videoAdControl.unmute");
+  const playBtn = ADel.querySelector(":scope .videoAdControl.pause");
+  const muteBtn = ADel.querySelector(":scope .videoAdControl.unmute");
   
   controls.addEventListener("pointerdown", (event) => {
     controls.classList.add("showControls");
