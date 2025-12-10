@@ -141,6 +141,10 @@ html {
       opacity: 0;
       transition: opacity 0.5s;
 
+      &.showControls {
+        opacity: 1;
+      }
+
       & .videoAdControl {
         width: 41px;
         height: 41px;
@@ -160,9 +164,11 @@ html {
       }
     }
     
-    &:is(:hover, :focus-visible) {
-      & .videoAdControls {
-        opacity: 1;
+    @media (pointer: fine) {
+      &:hover {
+        & .videoAdControls {
+          opacity: 1;
+        }
       }
     }
   }
@@ -334,6 +340,10 @@ html {
       opacity: 0;
       transition: opacity 0.5s;
 
+      &.showControls {
+        opacity: 1;
+      }
+
       & .videoAdControl {
         width: 41px;
         height: 41px;
@@ -353,9 +363,11 @@ html {
       }
     }
     
-    &:is(:hover, :focus-visible) {
-      & .videoAdControls {
-        opacity: 1;
+    @media (pointer: fine) {
+      &:hover {
+        & .videoAdControls {
+          opacity: 1;
+        }
       }
     }
   }
@@ -486,6 +498,10 @@ html {
       opacity: 0;
       transition: opacity 0.5s;
 
+      &.showControls {
+        opacity: 1;
+      }
+
       & .videoAdControl {
         width: 41px;
         height: 41px;
@@ -505,9 +521,11 @@ html {
       }
     }
     
-    &:is(:hover, :focus-visible) {
-      & .videoAdControls {
-        opacity: 1;
+    @media (pointer: fine) {
+      &:hover {
+        & .videoAdControls {
+          opacity: 1;
+        }
       }
     }
   }
@@ -630,6 +648,10 @@ html {
       opacity: 0;
       transition: opacity 0.5s;
 
+      &.showControls {
+        opacity: 1;
+      }
+
       & .videoAdControl {
         width: 41px;
         height: 41px;
@@ -649,9 +671,11 @@ html {
       }
     }
     
-    &:is(:hover, :focus-visible) {
-      & .videoAdControls {
-        opacity: 1;
+    @media (pointer: fine) {
+      &:hover {
+        & .videoAdControls {
+          opacity: 1;
+        }
       }
     }
   }
@@ -767,8 +791,19 @@ html {
 (() => {
   const ADel = document.querySelector("#adCont_%timestamp%");
   const vid = ADel.querySelector(".videoAdVideo");
+  const controls = ADel.querySelector(".videoAdControls");
+  let showControlsTimeout;
   const playBtn = ADel.querySelector(".videoAdControl.pause");
   const muteBtn = ADel.querySelector(".videoAdControl.unmute");
+  
+  controls.addEventListener("pointerdown", (event) => {
+    controls.classList.add("showControls");
+    clearTimeout(showControlsTimeout);
+    showControlsTimeout = setTimeout(() => {
+      controls.classList.remove("showControls");
+    }, 1500);
+  });
+
   playBtn.addEventListener("click", (event) => {
     if (vid?.paused) {
       vid.play();
@@ -780,6 +815,7 @@ html {
       playBtn.querySelector(".playCircle").style.opacity = 1;
     }
   });
+
   muteBtn.addEventListener("click", (event) => {
     if (vid?.muted) {
       vid.muted = false;
