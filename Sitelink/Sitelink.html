@@ -21,6 +21,7 @@
 </div>
 
 <script>
+  "use strict";
   (() => {
     /**
      * returns a string with the CSS for the applicable site (defaults to sn.at homepage)
@@ -30,12 +31,13 @@
      * @example styleEl.textContent = getCSS(window.location.origin, headlineEl.textContent.length);
      */
     function getCSS(url, headlineLength = 0) {
-      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.\-_\+~#=]+\.salzburg24\.at\/?/).test(url);
+      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.\-_+~#=]+\.salzburg24\.at\/?/).test(url);
       let cssString = "";
 
       /**
        * @returns { string } minimal CSS reset
        */
+
       function getCssReset() {
         return `
 html {
@@ -51,20 +53,20 @@ html {
         if (salzburg24) {
           return `
 #adCont_%timestamp% {
-  --accentColor: #fbba00;
-  --headlineColor: #111;
-  --textColor: #000;
-  --bgColor: #F6F6F6;
+  --accentColor: var(--color-primary, #FAB900);
+  --headlineColor: var(--color-font, #1D1D1B);
+  --textColor: var(--color-font, #1D1D1B);
+  --bgColor: var(--color-gray-2, #F6F6F6);
 }
 `;
         }
         // default (sn.at):
         return `
 #adCont_%timestamp% {
-  --accentColor: #0358a9;
-  --headlineColor: #484848;
-  --textColor: #191919;
-  --bgColor: #f0f8ff;
+  --accentColor: var(--color-link, #0358a9);
+  --headlineColor: var(--color-teaser-link, #484848);
+  --textColor: var(--color-font-dark, #191919);
+  --bgColor: var(--background-box-light, #f0f8ff);
 }
 `;
       }
@@ -73,7 +75,7 @@ html {
        * @returns { string } CSS styling
        */
       function getCssStyling() {
-        if (RegExp(/immo\.[\w\d@:%.\-_\+~#=]+\.at/).test(url)) {
+        if (RegExp(/immo\.[\w\d@:%.\-_+~#=]+\.at/).test(url)) {
           return `
 /*** IMMO ***/
 /* CHANNEL */
@@ -221,7 +223,7 @@ html {
 }
 `;
         }
-        if (RegExp(/(jobs|karriere)\.[\w\d@:%.\-_\+~#=]+\.at/).test(url)) {
+        if (RegExp(/(jobs|karriere)\.[\w\d@:%.\-_+~#=]+\.at/).test(url)) {
           return `
 /*** KARRIERE ***/
 /* CHANNEL */
@@ -362,14 +364,15 @@ html {
     height: 100%;
     object-fit: cover;
     scale: 1;
-    transition: scale 0.15s ease-out;
+    will-change: scale;
+    transition: scale 0.5s ease;
   }
 
   & .anzeigeLabel {
-    margin: 10px 0;
+    margin: 1em 0;
     padding: 1cap;
     color: var(--textColor);
-    font-size: 0.6rem;
+    font-size: 0.625rem;
     font-weight: 900;
     letter-spacing: 0.075em;
     line-height: 1.15;
@@ -380,8 +383,8 @@ html {
 
   & .sitelinkHeadline {
     padding: 0 0 1rem;
-    font-size: 1.2rem;
-    font-weight: 800;
+    font-size: 1.375rem;
+    font-weight: 900;
     line-height: 1.15;
     text-align: left;
   }
@@ -471,7 +474,8 @@ html {
     height: 100%;
     object-fit: cover;
     scale: 1;
-    transition: scale 0.15s ease-out;
+    will-change: scale;
+    transition: scale 0.5s ease;
   }
 
   & .anzeigeLabel {
@@ -553,12 +557,12 @@ html {
     width: calc(100% / 1.618);
   }
   & .anzeigeLabel {
-    margin: 10px;
+    margin: 1em;
     position: absolute;
     bottom: 0;
     right: 0;
     font-family: Lato, Avenir, "Adobe Heiti Std", "Segoe UI", "Trebuchet MS", sans-serif;
-    font-size: 0.666rem;
+    font-size: 0.625rem;
     line-height: 1;
     @media screen and (min-width: 768px) {
       top: 0;
@@ -604,6 +608,18 @@ html {
     }
 
     /**
+     * @param { string } text - the string you want the length of (including spaces)
+     * @returns { number } an integer representing the human-perceived length of a string (returns 0 if it's not a string)
+     * @example getRealTextLength("🐋💨 lol"); // returns 6; ("🐋💨 lol".length would return 8)
+     */
+    function getRealTextLength(text) {
+      if (typeof text !== "string") {
+        return 0;
+      }
+      return Array.from(new Intl.Segmenter("de", { granularity: "grapheme" }).segment(text)).length;
+    }
+
+    /**
      * @returns { string } url of the root (topmost) site
      */
     function getTopUrl() {
@@ -612,7 +628,7 @@ html {
 
     const ADel = document.querySelector("#adCont_%timestamp%");
     if (ADel) {
-      const headlineLength = ADel.querySelector(".sitelinkHeadline")?.textContent.length;
+      const headlineLength = getRealTextLength(ADel.querySelector(".sitelinkHeadline")?.textContent);
       const targetIframe = getOutermostIframe(window);
       let topUrl;
       if (targetIframe) {

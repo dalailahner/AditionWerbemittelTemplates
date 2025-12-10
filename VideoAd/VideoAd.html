@@ -37,6 +37,7 @@
 </div>
 
 <script>
+  "use strict";
   (() => {
     /**
      * returns a string with the CSS for the applicable site (defaults to sn.at homepage)
@@ -45,7 +46,7 @@
      * @example styleEl.textContent = getCSS(window.location.origin);
      */
     function getCSS(url) {
-      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.\-_\+~#=]+\.salzburg24\.at\/?/).test(url);
+      const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.\-_+~#=]+\.salzburg24\.at\/?/).test(url);
       let cssString = "";
 
       /**
@@ -66,20 +67,20 @@ html {
         if (url.includes("salzburg24.at")) {
           return `
 #adCont_%timestamp% {
-  --accentColor: #fbba00;
-  --headlineColor: #111;
-  --textColor: #000;
-  --bgColor: #f8f8f8;
+  --accentColor: var(--color-primary, #FAB900);
+  --headlineColor: var(--color-font, #1D1D1B);
+  --textColor: var(--color-font, #1D1D1B);
+  --bgColor: var(--color-gray-2, #F6F6F6);
 }
 `;
         }
         // default (sn.at):
         return `
 #adCont_%timestamp% {
-  --accentColor: #0358a9;
-  --headlineColor: #484848;
-  --textColor: #191919;
-  --bgColor: #f0f8ff;
+  --accentColor: var(--color-link, #0358a9);
+  --headlineColor: var(--color-teaser-link, #484848);
+  --textColor: var(--color-font-dark, #191919);
+  --bgColor: var(--background-box-light, #f0f8ff);
 }
 `;
       }
@@ -88,7 +89,7 @@ html {
        * @returns { string } CSS styling
        */
       function getCssStyling() {
-        if (RegExp(/immo\.[\w\d@:%.\-_\+~#=]+\.at/).test(url)) {
+        if (RegExp(/immo\.[\w\d@:%.\-_+~#=]+\.at/).test(url)) {
           return `
 /*** IMMO ***/
 /* CHANNEL */
@@ -264,7 +265,7 @@ html {
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     line-height: 1;
     @media screen and (min-width: 768px) {
       font-size: 0.875rem;
@@ -283,7 +284,7 @@ html {
 }
 `;
         }
-        if (RegExp(/(jobs|karriere)\.[\w\d@:%.\-_\+~#=]+\.at/).test(url)) {
+        if (RegExp(/(jobs|karriere)\.[\w\d@:%.\-_+~#=]+\.at/).test(url)) {
           return `
 /*** KARRIERE ***/
 /* CHANNEL */
@@ -519,10 +520,10 @@ html {
  
   & .anzeigeLabel {
     margin-bottom: 0.6rem;
-    padding: 0.35rem 0.5rem;
+    padding: 1cap;
     width: fit-content;
     color: var(--textColor);
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     font-weight: 900;
     letter-spacing: 0.05em;
     line-height: 1.15;
@@ -532,15 +533,15 @@ html {
   }
  
   & .videoAdHeadline {
-    font-size: 1.2rem;
-    font-weight: 800;
+    font-size: 1.375rem;
+    font-weight: 900;
     line-height: 1.15;
     text-align: left;
   }
 }
  
 /* IN ARTICLE */
-.article #adCont_%timestamp% {
+.article_main #adCont_%timestamp% {
   position: relative;
   @media screen and (min-width: 768px) {
     margin: 0 auto;
@@ -549,11 +550,16 @@ html {
   & .videoAdCont {
     flex-direction: row;
     align-items: center;
+    background-color: var(--bgColor);
   }
   & .videoAdVideoCont {
     width: calc(100% / 1.618);
   }
+  & .videoAdLink {
+    margin: 0;
+  }
   & .anzeigeLabel {
+    margin: 0;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -564,10 +570,11 @@ html {
   }
   & .videoAdHeadline {
     width: 100%;
-    padding: 0 1.5em 0 0.5em;
+    padding: 0 0.5em 1em;
     font-size: 1.125rem;
     z-index: 1;
     @media screen and (min-width: 768px) {
+      font-size: 1.5rem;
       padding: 0 1em;
     }
   }
@@ -677,7 +684,7 @@ html {
 }
  
 /* IN ARTICLE */
-:is(.page-article, .l-content, .banner-serp-results) #adCont_%timestamp% {
+:is(.articleContent, .l-content, .banner-serp-results) #adCont_%timestamp% {
   & .videoAdCont {
     padding: 0;
     flex-direction: row;
@@ -703,7 +710,7 @@ html {
     }
   }
   & .videoAdHeadline {
-    padding: 0 1.5em 0 0.5em;
+    padding: 0 0.5em 1em;
     width: 100%;
     font-size: 1.125rem;
     text-align: left;
