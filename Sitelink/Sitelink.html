@@ -563,8 +563,6 @@
       font-size: 0.625rem;
       line-height: 1;
       @media screen and (min-width: 768px) {
-        top: 0;
-        bottom: unset;
         font-size: 0.875rem;
       }
     }
@@ -588,26 +586,24 @@
        */
       function getCssDSA() {
         return `
-  #adCont_%timestamp% {
-    *:has(> &) {
-      position: relative;
-
-      :is(.box-lead) & {
-        position: revert;
-      }
-    }
-
-    & ~ iframe {
-      width: 60px;
-      height: 1rem;
-      position: absolute;
-      top: 0;
-      right: 0;
-      border: none;
-      z-index: 1;
+#adCont_%timestamp% {
+  *:has(> &) {
+    position: relative;
+     :is(.box-lead) & {
+      position: revert;
     }
   }
-  `;
+   & ~ iframe {
+    width: 60px;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    z-index: 1;
+  }
+}
+`;
       }
 
       cssString += getCssReset();
@@ -654,8 +650,9 @@
       return this.window.location === this.window.parent.location ? this.document.location.origin : this.document.referrer;
     }
 
-    // *****
-    // MAIN:
+    // **********
+    // MAIN FUNC:
+
     function initSitelinkAd() {
       const ADel = document.querySelector("#adCont_%timestamp%");
       const hasDSA = Boolean(document.querySelector("#dsaButton_%timestamp%"));
@@ -690,8 +687,8 @@
       }
     }
 
-    // *****
-    // CALL:
+    // **********
+    // CALL MAIN:
 
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => {

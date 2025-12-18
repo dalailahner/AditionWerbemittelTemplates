@@ -42,10 +42,11 @@
     /**
      * returns a string with the CSS for the applicable site (defaults to sn.at homepage)
      * @param { string } url - the URL of the site where the ad lives in
+     * @param { boolean } [hasDSA=false] - if the ad has a DSA button
      * @returns { string } the CSS for the Ad
-     * @example styleEl.textContent = getCSS(window.location.origin);
+     * @example styleEl.textContent = getCSS(window.location.origin, true);
      */
-    function getCSS(url) {
+    function getCSS(url, hasDSA = false) {
       const salzburg24 = RegExp(/https?:\/\/[\w\d@:%.\-_+~#=]+\.salzburg24\.at\/?/).test(url);
       let cssString = "";
 
@@ -561,31 +562,33 @@ html {
 /* IN ARTICLE */
 .article_main #adCont_%timestamp% {
   position: relative;
+
   @media screen and (min-width: 768px) {
     margin: 0 auto;
     width: 100%;
   }
+
   & .videoAdCont {
     flex-direction: row;
     align-items: center;
     background-color: var(--bgColor);
   }
+
   & .videoAdVideoCont {
     width: calc(100% / 1.618);
   }
+
   & .videoAdLink {
     margin: 0;
   }
+
   & .anzeigeLabel {
     margin: 0;
     position: absolute;
     bottom: 0;
     right: 0;
-    @media screen and (min-width: 768px) {
-      top: 0;
-      bottom: unset;
-    }
   }
+
   & .videoAdHeadline {
     width: 100%;
     padding: 0 0.5em 1em;
@@ -728,8 +731,6 @@ html {
     font-size: 0.666rem;
     line-height: 1;
     @media screen and (min-width: 768px) {
-      top: 0;
-      bottom: unset;
       font-size: 0.875rem;
     }
   }
@@ -748,9 +749,37 @@ html {
 `;
       }
 
+      /**
+       * @returns { string } CSS styling for the DSA button
+       */
+      function getCssDSA() {
+        return `
+#adCont_%timestamp% {
+  *:has(> &) {
+    position: relative;
+     :is(.box-lead) & {
+      position: revert;
+    }
+  }
+   & ~ iframe {
+    width: 60px;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    z-index: 1;
+  }
+}
+`;
+      }
+
       cssString += getCssReset();
       cssString += getCssVariables();
       cssString += getCssStyling();
+      if (hasDSA) {
+        cssString += getCssDSA();
+      }
 
       return cssString;
     }
@@ -770,24 +799,33 @@ html {
       return false;
     }
 
+    /**
+     * @returns { string } url of the root (topmost) site
+     */
     function getTopUrl() {
       return this.window.location === this.window.parent.location ? this.document.location.origin : this.document.referrer;
     }
 
-    const ADel = document.querySelector("#adCont_%timestamp%");
-    if (ADel) {
-      const targetIframe = getOutermostIframe(window);
-      let topUrl;
-      if (targetIframe) {
-        topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
-      }
+    // **********
+    // MAIN FUNC:
 
-      const CSSel = document.createElement("style");
-      CSSel.textContent = getCSS(topUrl);
-      ADel.insertAdjacentElement("afterbegin", CSSel);
+    function initVideoAd() {
+      const ADel = document.querySelector("#adCont_%timestamp%");
+      const hasDSA = Boolean(document.querySelector("#dsaButton_%timestamp%"));
 
-      const scriptEl = document.createElement("script");
-      scriptEl.textContent = `
+      if (ADel) {
+        const targetIframe = getOutermostIframe(window);
+        let topUrl;
+        if (targetIframe) {
+          topUrl = targetIframe ? getTopUrl.call(targetIframe.ownerDocument.defaultView) : getTopUrl();
+        }
+
+        const CSSel = document.createElement("style");
+        CSSel.textContent = getCSS(topUrl, hasDSA);
+        ADel.insertAdjacentElement("afterbegin", CSSel);
+
+        const scriptEl = document.createElement("script");
+        scriptEl.textContent = `
 (() => {
   const ADel = document.querySelector("#adCont_%timestamp%");
   const vid = ADel.querySelector(":scope .videoAdVideo");
@@ -830,16 +868,36 @@ html {
   });
 })();
 `;
+        if (hasDSA) {
+          const dsaBtn = document.querySelector("#dsaButton_%timestamp%");
+          const dsaBtnParent = dsaBtn.parentElement;
+          dsaBtnParent.insertAdjacentElement("beforebegin", dsaBtn);
+          dsaBtnParent.remove();
+        }
 
-      if (targetIframe) {
-        targetIframe.insertAdjacentElement("beforebegin", ADel);
-        targetIframe.insertAdjacentElement("afterend", scriptEl);
-        targetIframe.parentNode.style.width = "100%";
-        targetIframe.parentNode.style.minWidth = "100%";
-        targetIframe.remove();
+        if (targetIframe) {
+          targetIframe.insertAdjacentElement("beforebegin", ADel);
+          targetIframe.insertAdjacentElement("afterend", scriptEl);
+          targetIframe.parentNode.style.width = "100%";
+          targetIframe.parentNode.style.minWidth = "100%";
+          if (!hasDSA) {
+            targetIframe.remove();
+          }
+        }
+      } else {
+        console.warn("#adCont_%timestamp% not found in DOM; cancelled inserting iframe content into site;");
       }
+    }
+
+    // **********
+    // CALL MAIN:
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => {
+        initVideoAd();
+      });
     } else {
-      console.warn("#adCont_%timestamp% not found in DOM; cancelled inserting iframe content into site;");
+      initVideoAd();
     }
   })();
 </script>
