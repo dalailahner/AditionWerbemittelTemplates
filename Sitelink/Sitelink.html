@@ -594,12 +594,11 @@
     }
   }
    & ~ iframe {
-    width: 60px;
-    height: 1rem;
     position: absolute;
     top: 0;
     right: 0;
     border: none;
+    clip-path: rect(0 100% 1rem calc(100% - 60px));
     z-index: 1;
   }
 }
