@@ -633,7 +633,7 @@
     /**
      * @param { string } text - the string you want the length of (including spaces)
      * @returns { number } an integer representing the human-perceived length of a string (returns 0 if it's not a string)
-     * @example getRealTextLength("🐋💨 lol"); // returns 6; ("🐋💨 lol".length would return 8)
+     * @example getRealTextLength("🐋"); // returns 1; ("🐋".length would return 2) "🐋" is the whale emoji &#128011;
      */
     function getRealTextLength(text) {
       if (typeof text !== "string") {
