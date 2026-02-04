@@ -336,6 +336,9 @@
   .contentbox .teaserbox .teaser.content_ad:has(.sitelinkCont) {
     place-content: start;
   }
+  #adCont_%timestamp% a::after {
+    z-index: 0;
+  }
 
   #adCont_%timestamp% {
     width: 100%;
@@ -366,9 +369,8 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      scale: 1;
-      will-change: scale;
-      transition: scale 0.5s ease;
+      will-change: transform;
+      transition: transform 0.5s ease;
     }
 
     & .anzeigeLabel {
