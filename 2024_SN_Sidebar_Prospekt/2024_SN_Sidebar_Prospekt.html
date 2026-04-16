@@ -1,0 +1,152 @@
+<div id="adCont_%timestamp%">
+  <!-- Werbeplatz %contentunitid%: -->
+  <!-- - kampagne: %campaignid% -->
+  <!-- - banner: %bannerid% -->
+  <!-- - websiteid: %websiteid% -->
+
+  <style>
+    #adCont_%timestamp% {
+      width: 100%;
+      height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      font-family: Lato, sans-serif;
+      overflow: hidden;
+      & *,
+      & *::before,
+      & *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border: none;
+        text-decoration: none;
+      }
+      & a {
+        width: 100%;
+        & img {
+          width: calc(100% * @pagesLength@);
+          transition: transform 0.2s ease-out;
+        }
+      }
+      & nav {
+        width: 100%;
+        height: 41px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        & button {
+          height: 100%;
+          aspect-ratio: 1;
+          border-radius: 3px;
+          background-color: #0358a9;
+          cursor: pointer;
+          overflow: hidden;
+          & svg {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            & path {
+              fill: #fff;
+            }
+          }
+        }
+      }
+    }
+  </style>
+
+  <a href="%clickurl:u%" target="_blank"><img src="@pagesImg@" alt="Prospekt" data-pages="@pagesLength@" data-pos="0" /></a>
+  <nav>
+    <button type="button" aria-label="previous page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true" viewBox="0 -960 960 960">
+        <path d="m432-480 156 156q11 11 11 28t-11 28q-11 11-28 11t-28-11L348-452q-6-6-8-13t-3-15q0-8 3-15t8-13l184-184q11-11 28-11t28 11q11 11 11 28t-11 28L432-480Z" />
+      </svg>
+    </button>
+    <p class="pagination">1 / @pagesLength@</p>
+    <button type="button" aria-label="next page">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true" viewBox="0 -960 960 960">
+        <path d="M504-480 348-636q-11-11-11-28t11-28q11-11 28-11t28 11l184 184q6 6 9 13t2 15q0 8-2 15t-9 13L404-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l156-156Z" />
+      </svg>
+    </button>
+  </nav>
+
+  @if:truecount@
+  <img src="%truecount%" width="1" height="1" style="position: fixed; top: 0; left: 0; pointer-events: none" aria-hidden="true" />
+  @endif@
+</div>
+<script>
+  "use strict";
+  const skyscraperRechts = window.top.document.querySelector("#Skyscraper_rechts").parentNode;
+  let sideBarHeight = window.top.innerHeight;
+  let sideBarWidth = Number.parseInt(sideBarHeight / 2, 10);
+  let sidebarResizeThrottle = false;
+  const Btns = document.querySelectorAll("#adCont_%timestamp% nav button");
+  const prospekt = document.querySelector("#adCont_%timestamp% img");
+  const pagination = document.querySelector("#adCont_%timestamp% .pagination");
+  window.addEventListener("DOMContentLoaded", () => {
+    setsidebar();
+  });
+  window.addEventListener("load", () => {
+    resetsidebarProspekt();
+    Btns[0].addEventListener("click", () => {
+      let newPos = Number.parseInt(prospekt.dataset.pos, 10) - window.innerWidth;
+      if (newPos < 0) {
+        newPos = window.innerWidth * (prospekt.dataset.pages - 1);
+      }
+      prospekt.dataset.pos = newPos;
+      prospekt.style.transform = `translateX(-${newPos}px)`;
+      pagination.innerHTML = `${Number.parseInt(prospekt.dataset.pos / window.innerWidth, 10) + 1} &frasl; ${prospekt.dataset.pages}`;
+    });
+    Btns[Btns.length - 1].addEventListener("click", () => {
+      let newPos = Number.parseInt(prospekt.dataset.pos, 10) + window.innerWidth;
+      if (newPos > window.innerWidth * (prospekt.dataset.pages - 1)) {
+        newPos = 0;
+      }
+      prospekt.dataset.pos = newPos;
+      prospekt.style.transform = `translateX(-${newPos}px)`;
+      pagination.innerHTML = `${Number.parseInt(prospekt.dataset.pos / window.innerWidth, 10) + 1} &frasl; ${prospekt.dataset.pages}`;
+    });
+  });
+  window.top.addEventListener("resize", () => {
+    if (!sidebarResizeThrottle) {
+      sidebarResizeThrottle = true;
+      setsidebar();
+      resetsidebarProspekt();
+      setTimeout(() => {
+        sidebarResizeThrottle = false;
+      }, 150);
+    }
+  });
+  function setsidebar() {
+    sideBarHeight = window.top.innerHeight;
+    sideBarWidth = Number.parseInt(sideBarHeight / 2, 10);
+    if (window.top.innerWidth >= 1490) {
+      if (sideBarWidth + 1176 < window.top.document.documentElement.clientWidth) {
+        skyscraperRechts.style.display = "block";
+        setsidebarSize();
+      } else {
+        skyscraperRechts.style.display = "none";
+      }
+    } else {
+      if (sideBarWidth + 960 < window.top.document.documentElement.clientWidth) {
+        skyscraperRechts.style.display = "block";
+        setsidebarSize();
+      } else {
+        skyscraperRechts.style.display = "none";
+      }
+    }
+  }
+  function setsidebarSize() {
+    skyscraperRechts.style.minWidth = `${sideBarWidth}px`;
+    window.frameElement.setAttribute("width", sideBarWidth);
+    window.frameElement.setAttribute("height", sideBarHeight);
+  }
+  function resetsidebarProspekt() {
+    prospekt.dataset.pos = "0";
+    prospekt.style.transform = "translateX(0px)";
+    pagination.innerHTML = `1 &frasl; ${prospekt.dataset.pages}`;
+  }
+</script>

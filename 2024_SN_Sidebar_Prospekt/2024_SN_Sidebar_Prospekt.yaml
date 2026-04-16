@@ -1,0 +1,9 @@
+---
+pagesImg:
+  fieldType: upload
+  text: Prospekt Seiten
+  type: file
+pagesLength:
+  fieldType: textfield
+  text: Seitenanzahl
+  type: string
