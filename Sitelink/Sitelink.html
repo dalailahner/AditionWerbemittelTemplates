@@ -7,7 +7,7 @@
 
   <a class="sitelinkCont" href="%clickurl:u%" target="_blank">
     <div class="sitelinkImgCont">
-      <img class="sitelinkImg" src="@img@" loading="lazy" />
+      <img class="sitelinkImg" src="@img@" loading="lazy" aria-hidden="true" />
     </div>
     <p class="anzeigeLabel">Anzeige</p>
     <h2 class="sitelinkHeadline">@headline@</h2>
@@ -16,7 +16,7 @@
   <div id="codeafter_%contentunitid%" @if:hideCodeAfter@style="display:none" @endif@>@codeAfter@</div>
 
   @if:truecount@
-  <img src="%truecount%" width="1" height="1" />
+  <img src="%truecount%" width="1" height="1" aria-hidden="true" />
   @endif@
 </div>
 
