@@ -1,33 +1,61 @@
 ---
 img:
+  headline: Bild
+  text: Bilddatei (600x400) hochladen
   fieldType: upload
-  text: Bild (600x400) hochladen
   type: file
 headline:
-  fieldType: textfield
+  headline: Text
   text: Headline<br>(max. 50 Zeichen)
+  fieldType: textfield
   type: string
   validator:
     type: length
     min: 0
     max: 50
-hideCodeBefore:
+politischeAnzeige:
+  text: politische Anzeige
   fieldType: checkbox
   type: boolean
-  text: "Hide Code before (display: none)"
-  default: true
+  group: "Politische Anzeige"
+  default: false
+sponsorName:
+  text: Sponsor
+  fieldType: textfield
+  type: string
+  group: "Politische Anzeige"
+  showIf:
+    placeholderName: politischeAnzeige
+    values: [true]
+sponsorUrl:
+  text: mehr dazu (URL)
+  fieldType: textfield
+  type: string
+  group: "Politische Anzeige"
+  showIf:
+    placeholderName: politischeAnzeige
+    values: [true]
 codeBefore:
-  fieldType: textarea
   text: Additional HTML-Code before
-  type: text
+  fieldType: textarea
+  type: string
   default: <!-- HTML-Code before -->
-hideCodeAfter:
+  group: "Code before/after"
+hideCodeBefore:
+  text: "Hide Code before (display: none)"
   fieldType: checkbox
   type: boolean
-  text: "Hide Code after (display: none)"
   default: true
+  group: "Code before/after"
 codeAfter:
-  fieldType: textarea
   text: Additional HTML-Code after
-  type: text
+  fieldType: textarea
+  type: string
   default: <!-- HTML-Code after -->
+  group: "Code before/after"
+hideCodeAfter:
+  text: "Hide Code after (display: none)"
+  fieldType: checkbox
+  type: boolean
+  default: true
+  group: "Code before/after"

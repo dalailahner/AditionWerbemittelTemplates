@@ -9,9 +9,12 @@
     <div class="sitelinkImgCont">
       <img class="sitelinkImg" src="@img@" loading="lazy" aria-hidden="true" />
     </div>
-    <p class="anzeigeLabel">Anzeige</p>
+    <p class="anzeigeLabel">@if:politischeAnzeige@Politische @endif@Anzeige</p>
     <h2 class="sitelinkHeadline">@headline@</h2>
   </a>
+  @if:politischeAnzeige@
+  <p class="politischeAnzeigeText">Sponsor: @sponsorName@<br />Mehr Infos: <a class="politischeAnzeigeLink" href="@sponsorUrl@" target="_blank">hier</a></p>
+  @endif@
 
   <div id="codeafter_%contentunitid%" @if:hideCodeAfter@style="display:none" @endif@>@codeAfter@</div>
 
@@ -104,6 +107,10 @@
       text-decoration: none;
       border-bottom: 3px solid var(--accentColor);
       background-color: #eee;
+
+      &:has(~ .politischeAnzeigeText) {
+        border: none;
+      }
     }
 
     & .sitelinkImgCont {
@@ -134,6 +141,19 @@
       text-align: left;
       text-wrap: pretty;
     }
+
+    & .politischeAnzeigeText {
+      padding: 0 0 0.5rem 10px;
+      font-size: 0.875rem;
+      text-align: left;
+      line-height: 1.333;
+      border-bottom: 3px solid var(--accentColor);
+      background-color: #eee;
+
+      & .politischeAnzeigeLink {
+        font-weight: inherit;
+      }
+    }
   }
 
   /* SEARCH */
@@ -148,6 +168,10 @@
         flex-direction: row;
         align-items: center;
         position: relative;
+      }
+      &:has(~ .politischeAnzeigeText) {
+        margin-bottom: -1px;
+        border-radius: 4px 4px 0 0;
       }
     }
     & .sitelinkImgCont {
@@ -184,6 +208,15 @@
         font-size: 1.5rem;
         text-align: center;
       }
+    }
+    & .politischeAnzeigeText {
+      margin-block-end: 1rem;
+      padding: 0.25rem 0.5rem;
+      position: relative;
+      border: 1px solid rgba(0,0,0,.175);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      background-color: #fff;
     }
   }
   /* ARTICLE */
@@ -233,7 +266,6 @@
   #adCont_%timestamp% {
     width: 100%;
     font-family: Lato, Avenir, "Adobe Heiti Std", "Segoe UI", "Trebuchet MS", sans-serif;
-
     & * {
       box-sizing: border-box;
       padding: 0;
@@ -241,7 +273,6 @@
       border: none;
       word-break: break-word;
     }
-
     & .sitelinkCont {
       padding: 1.5rem;
       width: 100%;
@@ -250,8 +281,10 @@
       align-items: start;
       justify-content: start;
       text-decoration: none;
+      &:has(~ .politischeAnzeigeText) {
+        padding-block-end: 0.75rem;
+      }
     }
-
     & .sitelinkImgCont {
       width: 100%;
       aspect-ratio: 3 / 2;
@@ -262,22 +295,30 @@
       height: 100%;
       object-fit: cover;
     }
-
     & .anzeigeLabel {
       color: var(--textColor);
       font-size: 0.875rem;
       text-align: left;
       text-transform: uppercase;
     }
-
     & .sitelinkHeadline {
-      margin-top: 0.5em;
+      margin-top: 0.75rem;
       color: ${salzburg24 ? "var(--textColor)" : "var(--accentColor)"};
       font-size: 1.5rem;
       font-weight: 400;
       line-height: 1.2;
       text-align: left;
       text-wrap: pretty;
+    }
+    & .politischeAnzeigeText {
+      padding-inline-start: 1.5rem;
+      font-size: 0.875rem;
+      line-height: 1.333;
+
+      & .politischeAnzeigeLink {
+        text-decoration: underline;
+        text-underline-offset: 0.125em;
+      }
     }
   }
 
@@ -327,6 +368,10 @@
         font-size: 1.5rem;
       }
     }
+    & .politischeAnzeigeText {
+      padding: 0 0 0.75em 0.75em;
+      background-color: var(--bgColor);
+    }
   }
   `;
         }
@@ -337,7 +382,7 @@
     place-content: start;
   }
   #adCont_%timestamp% a::after {
-    z-index: 0;
+    display: none;
   }
 
   #adCont_%timestamp% {
@@ -387,11 +432,23 @@
     }
 
     & .sitelinkHeadline {
-      padding: 0 0 1rem;
+      padding: 0 0 0.25rem;
       font-size: 1.375rem;
       font-weight: 900;
       line-height: 1.15;
       text-align: left;
+    }
+
+    & .politischeAnzeigeText {
+      font-size: 0.75rem;
+      font-weight: 400;
+      text-align: left;
+      line-height: 1.333;
+
+      & .politischeAnzeigeLink {
+        text-decoration: underline;
+        text-underline-offset: 0.125em;
+      }
     }
   }
 
@@ -495,6 +552,18 @@
       text-align: left;
       text-wrap: pretty;
     }
+
+    & .politischeAnzeigeText {
+      margin: 10px 0;
+      color: var(--headlineColor);
+      font-size: 1rem;
+      line-height: 1.333;
+
+      & .politischeAnzeigeLink {
+        color: inherit;
+        text-decoration: underline;
+      }
+    }
   }
 
   /* CHANNEL BLAUE BOX */
@@ -540,6 +609,13 @@
         font-size: 1.25rem;
         font-weight: 700;
       }
+      & .politischeAnzeigeText {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        color: #fff;
+        font-size: 0.875rem;
+      }
     }
   }
 
@@ -577,6 +653,13 @@
         padding: 0 1em;
         font-size: 1.5rem;
         text-align: center;
+      }
+    }
+    & .politischeAnzeigeText {
+      margin: 0;
+      font-size: 0.875rem;
+      @media screen and (min-width: 768px) {
+        font-size: 1rem;
       }
     }
   }
@@ -661,6 +744,7 @@
     function initSitelinkAd() {
       const ADel = document.querySelector("#adCont_%timestamp%");
       const hasDSA = Boolean(document.querySelector("#dsaButton_%timestamp%"));
+      const politischeAnzeigeLinkEl = ADel.querySelector(":scope .politischeAnzeigeLink");
 
       if (ADel) {
         const targetIframe = getOutermostIframe(window);
@@ -679,6 +763,11 @@
           const dsaBtnParent = dsaBtn.parentElement;
           dsaBtnParent.insertAdjacentElement("beforebegin", dsaBtn);
           dsaBtnParent.remove();
+        }
+
+        if (politischeAnzeigeLinkEl) {
+          const politischeAnzeigeLinkURL = new URL(politischeAnzeigeLinkEl?.href);
+          politischeAnzeigeLinkEl.textContent = politischeAnzeigeLinkURL.hostname;
         }
 
         if (targetIframe) {
