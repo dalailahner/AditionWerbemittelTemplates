@@ -1,0 +1,98 @@
+<div id="adCont_%timestamp%">
+  <!-- Werbeplatz %contentunitid%: -->
+  <!-- - kampagne: %campaignid% -->
+  <!-- - banner: %bannerid% -->
+  <!-- - websiteid: %websiteid% -->
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html,
+    body,
+    #adCont_%timestamp% {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <div style="width: 100%; height: 100%; display: grid; place-content: center; background: red">
+    <p style="color:#fff;font-size:2rem;font-weight;bold;">TEST</p>
+  </div>
+  @if:truecount@
+  <img src="%truecount%" width="1" height="1" style="position: fixed; top: 0; left: 0; pointer-events: none" aria-hidden="true" />
+  @endif@
+</div>
+
+<script>
+  "use strict";
+  (() => {
+    // **********
+    // FUNCTIONS:
+
+    /**
+     * @param { Window } startingWindow - the window from where the function should start traversing up.
+     * @returns { HTMLIFrameElement | false } the topmost iframe or false if there is none.
+     * @example const iframe = getOutermostIframe(window);
+     */
+    function getOutermostIframe(startingWindow) {
+      if (startingWindow.frameElement) {
+        if (startingWindow.parent.frameElement) {
+          return getOutermostIframe(startingWindow.parent);
+        }
+        return startingWindow.frameElement;
+      }
+      return false;
+    }
+
+    // **********
+    // MAIN FUNC:
+
+    function initUnderstitialAd() {
+      const ADel = document.querySelector("#adCont_%timestamp%");
+      const hasDSA = Boolean(document.querySelector("#dsaButton_%timestamp%"));
+      const politischeAnzeigeLinkEl = ADel.querySelector(":scope .politischeAnzeigeLink");
+
+      if (ADel) {
+        const targetIframe = getOutermostIframe(window);
+
+        if (hasDSA) {
+          const dsaBtn = document.querySelector("#dsaButton_%timestamp%");
+          const dsaBtnParent = dsaBtn.parentElement;
+          dsaBtnParent.insertAdjacentElement("beforebegin", dsaBtn);
+          dsaBtnParent.remove();
+        }
+
+        if (politischeAnzeigeLinkEl) {
+          const politischeAnzeigeLinkURL = new URL(politischeAnzeigeLinkEl?.href);
+          politischeAnzeigeLinkEl.textContent = politischeAnzeigeLinkURL.hostname;
+        }
+
+        if (targetIframe) {
+          targetIframe.style = "width: 100%; height: 100%;";
+          targetIframe.parentElement.style = "width: 100%; height: calc(100svh - var(--headerHeight, 4rem));";
+
+          // targetIframe.insertAdjacentElement("beforebegin", ADel);
+          if (!hasDSA) {
+            // targetIframe.remove();
+          }
+        }
+      } else {
+        console.warn("#adCont_%timestamp% not found in DOM; cancelled inserting iframe content into site;");
+      }
+    }
+
+    // **********
+    // CALL MAIN:
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => {
+        initUnderstitialAd();
+      });
+    } else {
+      initUnderstitialAd();
+    }
+  })();
+</script>

@@ -1,0 +1,74 @@
+---
+adType:
+  text: Werbemittel Typ
+  fieldType: combobox
+  type: string
+  store:
+    img: Bild
+    html: HTML
+imgFile:
+  text: Bilddatei hochladen
+  fieldType: upload
+  type: file
+  showIf:
+    placeholderName: adType
+    values: [img]
+adUrl:
+  text: Hostinglink (URL)
+  fieldType: textfield
+  type: string
+  showIf:
+    placeholderName: adType
+    values: [html]
+responsive:
+  text: responsive Ausspielung
+  description: Passt Breite/Höhe/Verhältnis des Werbemittel-Containers and das jeweilige Endgerät an. Heißt das Werbemittel muss auch für responsive Ausspielung ausgelegt sein. (Bei nicht-responsiver Ausspielung wird das Verhältnis mit 1:2 angenommen)
+  fieldType: checkbox
+  type: boolean
+  default: false
+politischeAnzeige:
+  text: politische Anzeige
+  fieldType: checkbox
+  type: boolean
+  group: "Politische Anzeige"
+  default: false
+sponsorName:
+  text: Sponsor
+  fieldType: textfield
+  type: string
+  group: "Politische Anzeige"
+  showIf:
+    placeholderName: politischeAnzeige
+    values: [true]
+sponsorUrl:
+  text: mehr dazu (URL)
+  fieldType: textfield
+  type: string
+  group: "Politische Anzeige"
+  showIf:
+    placeholderName: politischeAnzeige
+    values: [true]
+codeBefore:
+  text: Additional HTML-Code before
+  fieldType: textarea
+  type: string
+  default: <!-- HTML-Code before -->
+  group: "Code before/after"
+hideCodeBefore:
+  text: "Hide Code before (display: none)"
+  fieldType: checkbox
+  type: boolean
+  default: true
+  group: "Code before/after"
+codeAfter:
+  text: Additional HTML-Code after
+  fieldType: textarea
+  type: string
+  default: <!-- HTML-Code after -->
+  group: "Code before/after"
+hideCodeAfter:
+  text: "Hide Code after (display: none)"
+  fieldType: checkbox
+  type: boolean
+  default: true
+  group: "Code before/after"
