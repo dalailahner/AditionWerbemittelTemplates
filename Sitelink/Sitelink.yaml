@@ -6,15 +6,47 @@ img:
   type: file
 headline:
   headline: Text
-  text: Headline<br>(max. 50 Zeichen)
+  text: Headline<br>(max.&nbsp;50&nbsp;Zeichen)
   fieldType: textfield
   type: string
   validator:
     type: length
     min: 0
     max: 50
+veranstaltung:
+  text: Veranstaltung
+  fieldType: checkbox
+  type: boolean
+  group: "Veranstaltung"
+  default: false
+ctaText:
+  text: CTA-Link Text
+  fieldType: textfield
+  type: string
+  default: zum Event
+  group: "Veranstaltung"
+  showIf:
+    placeholderName: veranstaltung
+    values: [true]
+eventDate:
+  text: Datum
+  fieldType: textfield
+  type: string
+  group: "Veranstaltung"
+  showIf:
+    placeholderName: veranstaltung
+    values: [true]
+eventLocation:
+  text: Ort
+  fieldType: textfield
+  type: string
+  required: false
+  group: "Veranstaltung"
+  showIf:
+    placeholderName: veranstaltung
+    values: [true]
 politischeAnzeige:
-  text: politische Anzeige
+  text: politische&nbsp;Anzeige
   fieldType: checkbox
   type: boolean
   group: "Politische Anzeige"

@@ -8,9 +8,39 @@
   <a class="sitelinkCont" href="%clickurl:u%" target="_blank">
     <div class="sitelinkImgCont">
       <img class="sitelinkImg" src="@img@" loading="lazy" aria-hidden="true" />
+      @if:veranstaltung@
+      <div class="eventDetails">
+        <p class="eventDetail">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+            <title>Veranstaltungszeitraum:</title>
+            <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Z" />
+          </svg>
+          @eventDate@
+        </p>
+        @if:eventLocation != ""@
+        <p class="eventDetail">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+            <title>Veranstaltunsort:</title>
+            <path
+              d="M536.5-503.5Q560-527 560-560t-23.5-56.5Q513-640 480-640t-56.5 23.5Q400-593 400-560t23.5 56.5Q447-480 480-480t56.5-23.5ZM480-186q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
+          </svg>
+          @eventLocation@
+        </p>
+        @endif@
+      </div>
+      @endif@
     </div>
     <p class="anzeigeLabel">@if:politischeAnzeige@Politische @endif@Anzeige</p>
     <h2 class="sitelinkHeadline">@headline@</h2>
+    @if:veranstaltung@
+    <p class="ctaLink">
+      @ctaText@
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor">
+        <title>öffnet in neuem Tab</title>
+        <path d="m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z"></path>
+      </svg>
+    </p>
+    @endif@
   </a>
   @if:politischeAnzeige@
   <p class="politischeAnzeigeText">Sponsor: @sponsorName@<br />Mehr Infos: <a class="politischeAnzeigeLink" href="@sponsorUrl@" target="_blank">hier</a></p>
@@ -124,6 +154,34 @@
       object-fit: cover;
     }
 
+    & .eventDetails {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      gap: 2px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    & .eventDetail {
+      padding: 0.25em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: start;
+      gap: 0.125em;
+      color: contrast-color(var(--accentColor));
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1;
+      background-color: var(--accentColor);
+
+      & svg {
+        height: 1em;
+      }
+    }
+
     & .anzeigeLabel {
       padding: 10px 0;
       color: ${salzburg24 ? "var(--textColor)" : "var(--accentColor)"};
@@ -140,6 +198,16 @@
       line-height: 1.2;
       text-align: left;
       text-wrap: pretty;
+    }
+
+    & .ctaLink {
+      font-size: 1rem;
+      font-weight: 400;
+      color: ${salzburg24 ? "var(--textColor)" : "var(--accentColor)"};
+      & svg {
+        height: 1em;
+        vertical-align: text-bottom;
+      }
     }
 
     & .politischeAnzeigeText {
@@ -186,6 +254,10 @@
         object-fit: cover;
       }
     }
+    & .eventDetails {
+      top: 0;
+      left: 0;
+    }
     & .anzeigeLabel {
       padding: 0.5rem 0.5rem 0;
       font-size: 0.875rem;
@@ -207,6 +279,14 @@
         width: 58.33333333%;
         font-size: 1.5rem;
         text-align: center;
+      }
+    }
+    & .ctaLink {
+      padding-inline: 0.5rem;
+      @media screen and (min-width: 576px) {
+        position: absolute;
+        right: 0;
+        bottom: 0.25rem;
       }
     }
     & .politischeAnzeigeText {
@@ -295,6 +375,33 @@
       height: 100%;
       object-fit: cover;
     }
+    & .eventDetails {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      gap: 2px;
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+    }
+    & .eventDetail {
+      padding: 0.25em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: start;
+      gap: 0.125em;
+      color: contrast-color(var(--accentColor));
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1;
+      background-color: var(--accentColor);
+
+      & svg {
+        height: 1em;
+      }
+    }
     & .anzeigeLabel {
       color: var(--textColor);
       font-size: 0.875rem;
@@ -309,6 +416,15 @@
       line-height: 1.2;
       text-align: left;
       text-wrap: pretty;
+    }
+    & .ctaLink {
+      font-size: 1rem;
+      font-weight: 400;
+      color: ${salzburg24 ? "var(--textColor)" : "var(--accentColor)"};
+      & svg {
+        height: 1em;
+        vertical-align: text-bottom;
+      }
     }
     & .politischeAnzeigeText {
       padding-inline-start: 1.5rem;
@@ -348,6 +464,13 @@
         object-fit: cover;
       }
     }
+    & .eventDetails {
+      top: 0;
+      left: 0;
+      @media screen and (min-width: 801px) {
+        flex-direction: row;
+      }
+    }
     & .anzeigeLabel {
       margin: 1.25rem;
       font-size: 0.875rem;
@@ -366,6 +489,13 @@
       @media screen and (min-width: 801px) {
         padding: 0;
         font-size: 1.5rem;
+      }
+    }
+    & .ctaLink {
+      @media screen and (min-width: 801px) {
+        position: absolute;
+        right: 1.25rem;
+        bottom: 0.25rem;
       }
     }
     & .politischeAnzeigeText {
@@ -403,6 +533,10 @@
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
+        
+      &:has(~ .politischeAnzeigeText) {
+        margin-block-end: 0.25rem;
+      }
     }
 
     & .sitelinkImgCont {
@@ -416,6 +550,33 @@
       object-fit: cover;
       will-change: transform;
       transition: transform 0.5s ease;
+    }
+    & .eventDetails {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      gap: 2px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    & .eventDetail {
+      padding: 0.25em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: start;
+      gap: 0.125em;
+      color: contrast-color(var(--accentColor));
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1;
+      background-color: var(--accentColor);
+
+      & svg {
+        height: 1em;
+      }
     }
 
     & .anzeigeLabel {
@@ -432,11 +593,19 @@
     }
 
     & .sitelinkHeadline {
-      padding: 0 0 0.25rem;
       font-size: 1.375rem;
       font-weight: 900;
       line-height: 1.15;
       text-align: left;
+    }
+
+    & .ctaLink {
+      font-weight: 900;
+      color: var(--accentColor);
+      & svg {
+        height: 1em;
+        vertical-align: middle;
+      }
     }
 
     & .politischeAnzeigeText {
@@ -468,6 +637,12 @@
       aspect-ratio: 3 / 2;
     }
 
+    & .eventDetails {
+      flex-direction: row;
+      align-items: end;
+      transform: translateY(-100%);
+    }
+
     & .anzeigeLabel {
       margin: 0;
       position: absolute;
@@ -484,6 +659,22 @@
         padding: 0 1em;
         font-size: 1.25rem;
       }
+      }
+      
+      & .ctaLink {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-size: 1rem;
+        transform: translate(-0.25em, calc(-100% - 0.25em));
+        
+        @media screen and (min-width: 768px) {
+          font-size: 1.25rem;
+        }
+    }
+
+    &:has(.ctaLink) {
+      margin-block-start: 1.5rem;
     }
   }
   `;
@@ -535,6 +726,33 @@
       transition: scale 0.5s ease;
     }
 
+    & .eventDetails {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      gap: 2px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    & .eventDetail {
+      padding: 0.25em;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: start;
+      gap: 0.125em;
+      color: contrast-color(var(--accentColor));
+      font-weight: 400;
+      line-height: 1;
+      background-color: var(--accentColor);
+
+      & svg {
+        height: 1em;
+      }
+    }
+
     & .anzeigeLabel {
       margin: 10px 0;
       color: var(--accentColor);
@@ -551,6 +769,16 @@
       line-height: 1.2;
       text-align: left;
       text-wrap: pretty;
+    }
+
+    & .ctaLink {
+      font-weight: 700;
+      color: var(--accentColor);
+      margin-block-start: 0.25em;
+      & svg {
+        height: 1em;
+        vertical-align: text-bottom;
+      }
     }
 
     & .politischeAnzeigeText {
@@ -579,8 +807,18 @@
         &:is(:hover, :focus-visible) .sitelinkHeadline {
           color: #fff;
         }
+
+        & > * {
+          margin-inline: 1.25rem;
+          color: #fff;
+
+          &:last-child {
+            margin-block-end: 1.25rem;
+          }
+        }
       }
       & .sitelinkImgCont {
+        margin: 0;
         height: 100%;
         position: absolute;
         top: 0;
@@ -599,22 +837,23 @@
           background: linear-gradient(to bottom,transparent ,rgba(25,25,25,.65));
         }
       }
-      & .anzeigeLabel {
-        margin-left: 1.25rem;
-        color: #fff;
-      }
       & .sitelinkHeadline {
-        padding: 0 1em 1em;
-        color: #fff;
         font-size: 1.25rem;
         font-weight: 700;
       }
       & .politischeAnzeigeText {
+        margin-inline: 1.25rem;
         position: absolute;
         top: 0;
-        left: 10px;
+        left: 0;
         color: #fff;
         font-size: 0.875rem;
+      }
+      &:has(.eventDetail) .politischeAnzeigeText {
+        top: 1.25rem;
+      }
+      &:has(.eventDetail:nth-of-type(2)) .politischeAnzeigeText {
+        top: 2.5rem;
       }
     }
   }
@@ -631,6 +870,11 @@
     }
     & .sitelinkImgCont {
       width: calc(100% / 1.618);
+    }
+    & .eventDetails {
+      flex-direction: row;
+      align-items: end;
+      transform: translateY(-100%);
     }
     & .anzeigeLabel {
       margin: 1em;
@@ -654,6 +898,12 @@
         font-size: 1.5rem;
         text-align: center;
       }
+    }
+    & .ctaLink {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      transform: translateY(100%);
     }
     & .politischeAnzeigeText {
       margin: 0;
